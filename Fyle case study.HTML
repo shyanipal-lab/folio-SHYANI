@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fyle — Bulk Mileage Case Study · Shyani Pal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f2f0eb;
+  --bg-card: #e8e5de;
+  --ink: #111110;
+  --ink-2: #5a5851;
+  --ink-3: #9a9690;
+  --accent: #e8441c;
+  --accent-2: #3b5bdb;
+  --yellow: #f5c842;
+  --green: #2a9d5c;
+  --line: rgba(17,17,16,0.1);
+  --line-strong: rgba(17,17,16,0.18);
+  --radius-sm: 10px;
+  --radius: 18px;
+  --radius-lg: 28px;
+  --radius-xl: 40px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+.cursor {
+  width: 10px; height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s, height 0.25s;
+  mix-blend-mode: multiply;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.18s cubic-bezier(.25,.8,.25,1), width 0.3s, height 0.3s;
+  opacity: 0.5;
+}
+
+.grain {
+  position: fixed; inset: -50%;
+  width: 200%; height: 200%;
+  pointer-events: none; z-index: 9000;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 0.5s steps(2) infinite;
+}
+@keyframes grain {
+  0%,100%{transform:translate(0,0)} 10%{transform:translate(-2%,-3%)} 30%{transform:translate(3%,1%)} 50%{transform:translate(-1%,4%)} 70%{transform:translate(4%,-2%)} 90%{transform:translate(-3%,2%)}
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%);
+  z-index: 500;
+  display: flex; align-items: center; gap: 0.25rem;
+  background: rgba(242,240,235,0.9);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--line-strong);
+  border-radius: 100px;
+  padding: 0.35rem 0.35rem;
+}
+.nav-link {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.8rem; font-weight: 500;
+  color: var(--ink-2);
+  text-decoration: none;
+  padding: 0.45rem 1rem;
+  border-radius: 100px;
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.nav-link:hover, .nav-link.active { color: var(--ink); }
+.nav-link.back {
+  background: var(--bg-card);
+  color: var(--ink);
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.nav-link.back:hover { background: var(--ink); color: var(--bg); }
+
+/* LAYOUT */
+.container { max-width: 800px; margin: 0 auto; padding: 0 2rem; }
+.container-wide { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+/* HERO */
+.cs-hero {
+  padding: 8rem 0 4rem;
+  border-bottom: 1px solid var(--line-strong);
+}
+.cs-eyebrow {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.cs-eyebrow::before {
+  content: '';
+  width: 24px; height: 2px;
+  background: var(--accent);
+  display: inline-block;
+}
+.cs-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+}
+.cs-title em {
+  font-style: italic;
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 400;
+  color: var(--ink-3);
+}
+.cs-subtitle {
+  font-size: 1.15rem;
+  line-height: 1.75;
+  color: var(--ink-2);
+  max-width: 60ch;
+  margin-bottom: 2.5rem;
+}
+
+/* META PILLS */
+.cs-meta {
+  display: flex; gap: 0.75rem; flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+.meta-pill {
+  display: flex; flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 0.85rem 1.25rem;
+  min-width: 130px;
+}
+.meta-pill-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 0.3rem;
+}
+.meta-pill-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.88rem; font-weight: 700;
+  color: var(--ink);
+}
+
+/* HERO IMAGE */
+.cs-hero-img {
+  width: 100%;
+  aspect-ratio: 16/7;
+  background: var(--ink);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--line-strong);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  margin-top: 1rem;
+}
+.cs-hero-img-inner {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+}
+.cs-hero-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* IMPACT BANNER */
+.impact-banner {
+  background: var(--accent);
+  color: white;
+  border-radius: var(--radius-lg);
+  padding: 2rem 2.5rem;
+  display: flex; align-items: center; gap: 2rem;
+  margin: 3rem 0;
+  flex-wrap: wrap;
+}
+.impact-stat {
+  text-align: center;
+  flex: 1; min-width: 120px;
+}
+.impact-number {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.5rem; font-weight: 800;
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+.impact-label {
+  font-size: 0.78rem;
+  opacity: 0.85;
+  line-height: 1.4;
+}
+.impact-divider {
+  width: 1px; height: 60px;
+  background: rgba(255,255,255,0.3);
+  flex-shrink: 0;
+}
+
+/* SECTIONS */
+.cs-section {
+  padding: 4rem 0;
+  border-bottom: 1px solid var(--line-strong);
+}
+.cs-section:last-of-type { border-bottom: none; }
+
+.section-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 0.6rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.section-label::before {
+  content: '';
+  width: 16px; height: 1.5px;
+  background: var(--ink-3);
+  display: inline-block;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.25rem;
+}
+.section-body {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--ink-2);
+}
+.section-body p + p { margin-top: 1rem; }
+.section-body strong { color: var(--ink); font-weight: 500; }
+
+/* PROBLEM CARDS */
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.problem-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.problem-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+  opacity: 0.4;
+}
+.problem-emoji { font-size: 1.5rem; margin-bottom: 0.75rem; display: block; }
+.problem-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem; font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.problem-desc {
+  font-size: 0.82rem;
+  color: var(--ink-2);
+  line-height: 1.65;
+}
+
+/* USER PERSONAS */
+.persona-row {
+  display: flex; gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+.persona-card {
+  flex: 1; min-width: 180px;
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  display: flex; align-items: flex-start; gap: 0.75rem;
+}
+.persona-avatar {
+  width: 42px; height: 42px; flex-shrink: 0;
+  background: var(--ink);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem; font-weight: 700;
+  color: var(--bg);
+}
+.persona-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.85rem; font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+.persona-desc { font-size: 0.75rem; color: var(--ink-2); line-height: 1.5; }
+
+/* RESEARCH STATS */
+.stat-row {
+  display: flex; gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+.stat-block {
+  flex: 1; min-width: 140px;
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  text-align: center;
+}
+.stat-number {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.8rem; font-weight: 800;
+  line-height: 1;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+/* KEY INSIGHTS */
+.insights-list {
+  margin-top: 1.5rem;
+  display: flex; flex-direction: column; gap: 0.75rem;
+}
+.insight-item {
+  display: flex; gap: 0.75rem; align-items: flex-start;
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  transition: border-color 0.2s;
+}
+.insight-item:hover { border-color: var(--accent); }
+.insight-icon {
+  width: 28px; height: 28px; flex-shrink: 0;
+  background: rgba(232,68,28,0.1);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+}
+.insight-text {
+  font-size: 0.88rem;
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+.insight-text strong { color: var(--ink); font-weight: 500; }
+
+/* BEFORE/AFTER */
+.before-after {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.ba-card {
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  border: 1px solid var(--line-strong);
+}
+.ba-card.before { background: rgba(232,68,28,0.04); border-color: rgba(232,68,28,0.2); }
+.ba-card.after { background: rgba(42,157,92,0.04); border-color: rgba(42,157,92,0.2); }
+.ba-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.ba-card.before .ba-label { color: var(--accent); }
+.ba-card.after .ba-label { color: var(--green); }
+.ba-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.ba-list li {
+  font-size: 0.83rem;
+  color: var(--ink-2);
+  line-height: 1.55;
+  padding-left: 1.25rem;
+  position: relative;
+}
+.ba-list li::before {
+  content: '—';
+  position: absolute; left: 0;
+  color: var(--ink-3);
+  font-size: 0.7rem;
+}
+.ba-card.after .ba-list li::before { content: '✓'; color: var(--green); }
+
+/* DESIGN DECISIONS */
+.decisions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.decision-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.decision-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.07); }
+.decision-num {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 2rem; font-style: italic;
+  color: var(--line-strong);
+  margin-bottom: 0.75rem;
+  transition: color 0.2s;
+}
+.decision-card:hover .decision-num { color: var(--accent); }
+.decision-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem; font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.decision-desc { font-size: 0.82rem; color: var(--ink-2); line-height: 1.65; }
+
+/* QUOTE */
+.cs-quote {
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: var(--radius-xl);
+  padding: 3rem;
+  margin: 2rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.cs-quote::before {
+  content: '"';
+  position: absolute; top: -1rem; left: 2rem;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 10rem;
+  color: rgba(255,255,255,0.06);
+  line-height: 1;
+  pointer-events: none;
+}
+.cs-quote-text {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-style: italic;
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+.cs-quote-attr {
+  font-size: 0.78rem;
+  color: rgba(242,240,235,0.5);
+  font-family: 'Syne', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* LEARNINGS */
+.learnings-list {
+  display: flex; flex-direction: column; gap: 0; margin-top: 1.5rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.learning-item {
+  display: flex; gap: 1.5rem; align-items: flex-start;
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid var(--line-strong);
+  transition: background 0.2s;
+}
+.learning-item:last-child { border-bottom: none; }
+.learning-item:hover { background: var(--bg-card); }
+.learning-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem; font-weight: 700;
+  color: var(--accent);
+  padding-top: 0.2rem;
+  flex-shrink: 0;
+  min-width: 32px;
+}
+.learning-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem; font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+.learning-desc { font-size: 0.83rem; color: var(--ink-2); line-height: 1.65; }
+
+/* NEXT PROJECT */
+.next-project {
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-xl);
+  padding: 3rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin: 3rem 0 5rem;
+  transition: background 0.2s, box-shadow 0.3s;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+}
+.next-project:hover { background: var(--ink); box-shadow: 0 20px 48px rgba(0,0,0,0.1); }
+.next-project:hover .next-title { color: var(--bg); }
+.next-project:hover .next-label { color: rgba(242,240,235,0.5); }
+.next-project:hover .next-arrow { background: var(--accent); color: white; }
+.next-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 0.5rem;
+  transition: color 0.2s;
+}
+.next-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem; font-weight: 700;
+  letter-spacing: -0.02em;
+  transition: color 0.2s;
+}
+.next-arrow {
+  width: 52px; height: 52px; flex-shrink: 0;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* IMAGE PLACEHOLDER */
+.img-placeholder {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-3);
+  position: relative;
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+.img-placeholder::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.5;
+}
+.img-placeholder span {
+  position: relative; z-index: 1;
+  background: var(--bg);
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  border: 1px solid var(--line-strong);
+}
+.img-placeholder.tall { aspect-ratio: 16/9; }
+.img-placeholder.short { aspect-ratio: 21/7; }
+
+/* REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.in { opacity: 1; transform: none; }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--line-strong);
+  padding: 1.75rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.78rem; color: var(--ink-3);
+  flex-wrap: wrap; gap: 1rem;
+}
+.footer-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700; font-size: 0.85rem;
+  color: var(--ink);
+}
+.footer-links { display: flex; gap: 1.75rem; }
+.footer-links a {
+  color: var(--ink-3); text-decoration: none;
+  font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 500;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--ink); }
+
+@media (max-width: 640px) {
+  .problem-grid, .before-after, .decisions-grid { grid-template-columns: 1fr; }
+  .impact-divider { display: none; }
+  .impact-banner { flex-direction: column; gap: 1.5rem; }
+  .cs-meta { gap: 0.5rem; }
+  .meta-pill { min-width: 100px; }
+  .container, .container-wide { padding: 0 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-link back">← Back</a>
+  <a href="index.html#work" class="nav-link">All Work</a>
+  <a href="hoshaksham-case-study.html" class="nav-link">Next Case →</a>
+</nav>
+
+<!-- HERO -->
+<div class="cs-hero">
+  <div class="container">
+    <div class="cs-eyebrow reveal">Fintech · Expense Management · Case Study</div>
+    <h1 class="cs-title reveal" style="transition-delay:.05s">
+      Fyle — Bulk Mileage<br><em>Expense Report</em>
+    </h1>
+    <p class="cs-subtitle reveal" style="transition-delay:.1s">
+      500+ users were filing mileage expenses one painful entry at a time. Some were crying. Some had switched to spreadsheets. I fixed it in 6 weeks. Here's how.
+    </p>
+    <div class="cs-meta reveal" style="transition-delay:.15s">
+      <div class="meta-pill">
+        <span class="meta-pill-label">Timeline</span>
+        <span class="meta-pill-value">March–April 2020</span>
+      </div>
+      <div class="meta-pill">
+        <span class="meta-pill-label">Duration</span>
+        <span class="meta-pill-value">1 Month</span>
+      </div>
+      <div class="meta-pill">
+        <span class="meta-pill-label">My Role</span>
+        <span class="meta-pill-value">End-to-End Designer</span>
+      </div>
+      <div class="meta-pill">
+        <span class="meta-pill-label">Platform</span>
+        <span class="meta-pill-value">Web App</span>
+      </div>
+      <div class="meta-pill">
+        <span class="meta-pill-label">Team</span>
+        <span class="meta-pill-value">1 Designer · 4+ Eng</span>
+      </div>
+    </div>
+    <div class="cs-hero-img reveal" style="transition-delay:.2s">
+      <div class="cs-hero-img-inner">
+        <span>↑ Add your hero image here</span>
+        <span style="font-size:0.6rem; opacity:0.5">(framerusercontent.com/images/1DBFcF5UBL8XBWRhgW5B1dmr8.png)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IMPACT BANNER -->
+<div class="container">
+  <div class="impact-banner reveal">
+    <div class="impact-stat">
+      <div class="impact-number">500+</div>
+      <div class="impact-label">complaint tickets resolved in one month</div>
+    </div>
+    <div class="impact-divider"></div>
+    <div class="impact-stat">
+      <div class="impact-number">6 wks</div>
+      <div class="impact-label">research to shipped feature</div>
+    </div>
+    <div class="impact-divider"></div>
+    <div class="impact-stat">
+      <div class="impact-number">93%</div>
+      <div class="impact-label">of users travel daily — the insight that changed everything</div>
+    </div>
+    <div class="impact-divider"></div>
+    <div class="impact-stat">
+      <div class="impact-number">32</div>
+      <div class="impact-label">survey responses that validated the direction</div>
+    </div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">The Setup</div>
+    <h2 class="section-title reveal">What even is Fyle?</h2>
+    <div class="section-body reveal">
+      <p>Fyle is a B2B expense management app used by companies whose employees travel regularly for work. Think client visits, daily commutes, site visits. The app lets employees log expenses and get reimbursed without drowning in paperwork.</p>
+      <p>The mileage feature let users add a route and get reimbursed for the distance traveled. Sounds simple. It wasn't. Every single mileage entry required the user to go through the full form — date, vehicle, cost centre, project, route — <strong>one trip at a time.</strong></p>
+      <p>For someone commuting every day? That's filling out the same form 20+ times a month. No wonder the support inbox was on fire.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">The Problem</div>
+    <h2 class="section-title reveal">The old flow was a patience-testing endurance sport</h2>
+    <div class="section-body reveal">
+      <p>Users had to add each mileage expense individually. Which sounds fine until you realise these are people who commute every single working day.</p>
+    </div>
+    <div class="problem-grid reveal">
+      <div class="problem-card">
+        <span class="problem-emoji">😨</span>
+        <div class="problem-title">One expense at a time</div>
+        <div class="problem-desc">Every single trip required opening the form, filling all fields, submitting, then starting again for the next one. For a daily commuter, this meant repeating the process ~20 times a month.</div>
+      </div>
+      <div class="problem-card">
+        <span class="problem-emoji">🧐</span>
+        <div class="problem-title">Repetitive data entry</div>
+        <div class="problem-desc">Each entry needed: Date, Vehicle Type, Cost Center, Project, and Route. The same fields. Every. Single. Time. Users were basically punished for traveling consistently.</div>
+      </div>
+      <div class="problem-card">
+        <span class="problem-emoji">🥱</span>
+        <div class="problem-title">No memory of what's been done</div>
+        <div class="problem-desc">Users had to mentally track how many expenses they'd added and how many were left. There was no overview, no count — just a screen of input fields with no sense of progress.</div>
+      </div>
+      <div class="problem-card">
+        <span class="problem-emoji">🫠</span>
+        <div class="problem-title">No visibility into status</div>
+        <div class="problem-desc">To see which expenses were saved vs reported, users had to navigate all the way back to the reports page. No glanceable summary. No peace of mind.</div>
+      </div>
+    </div>
+
+    <div class="cs-quote reveal" style="margin-top: 2.5rem;">
+      <div class="cs-quote-text">"The user had to add one expense at a time, remember how many they'd added, and had no overview — just a screen of multiple input fields."</div>
+      <div class="cs-quote-attr">— Shyani's problem summary, based on 500+ support tickets</div>
+    </div>
+  </div>
+</div>
+
+<!-- USERS -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">Our Audience</div>
+    <h2 class="section-title reveal">The people stuck in this loop</h2>
+    <div class="section-body reveal">
+      <p>The primary users are employees who travel regularly for work — commuting to the office, visiting clients, attending meetings. They're frequently on the move and incur mileage expenses that need to be logged for reimbursement.</p>
+    </div>
+    <div class="persona-row reveal">
+      <div class="persona-card">
+        <div class="persona-avatar">SW</div>
+        <div>
+          <div class="persona-name">Shweta Vas, 27</div>
+          <div class="persona-desc">Travels every day to work in her personal car. Files mileage at the end of the month in one exhausting sitting.</div>
+        </div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-avatar">JA</div>
+        <div>
+          <div class="persona-name">Jasmine Ansary, 28</div>
+          <div class="persona-desc">Travels for client meetings monthly. Low frequency, but the repetitive form still made her want to give up halfway through.</div>
+        </div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-avatar">JS</div>
+        <div>
+          <div class="persona-name">Jatin Sharma, 26</div>
+          <div class="persona-desc">Daily office commuter. Has genuinely considered just not claiming expenses because the form takes longer than the commute.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESEARCH -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">Quantitative Research</div>
+    <h2 class="section-title reveal">32 survey responses later...</h2>
+    <div class="section-body reveal">
+      <p>We ran user surveys to understand our audience better. 32 responses came in. One data point stood out immediately and shaped the entire design direction.</p>
+    </div>
+    <div class="stat-row reveal">
+      <div class="stat-block">
+        <div class="stat-number">93%</div>
+        <div class="stat-label">of users travel <strong>every day</strong> for work</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-number">7%</div>
+        <div class="stat-label">travel only 3 days a week or less</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-number">32</div>
+        <div class="stat-label">total survey responses collected</div>
+      </div>
+    </div>
+    <div class="insights-list reveal">
+      <div class="insight-item">
+        <div class="insight-icon">📅</div>
+        <div class="insight-text"><strong>Auto-fill the date.</strong> Since 93% travel daily, the date is almost always today. Don't make them type it.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">⚡</div>
+        <div class="insight-text"><strong>Show all entries at once.</strong> Users need to see the full picture — how many expenses, which are saved, which are reported — without bouncing between screens.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">🔁</div>
+        <div class="insight-text"><strong>Reduce repeated fields.</strong> Vehicle type, cost centre, and project are often the same across trips. Treat repeated data as a constant, not a question.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE/AFTER -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">The Transformation</div>
+    <h2 class="section-title reveal">Before the feature vs after</h2>
+    <div class="before-after reveal">
+      <div class="ba-card before">
+        <div class="ba-label">Before</div>
+        <ul class="ba-list">
+          <li>One mileage expense added per session</li>
+          <li>All fields manually entered every time</li>
+          <li>Date had to be typed in each entry</li>
+          <li>No way to see all expenses at a glance</li>
+          <li>Had to navigate to reports page for status</li>
+          <li>500+ support tickets a month. Someone was losing their mind.</li>
+        </ul>
+      </div>
+      <div class="ba-card after">
+        <div class="ba-label">After</div>
+        <ul class="ba-list">
+          <li>Multiple mileage expenses added in one session</li>
+          <li>Constant fields (vehicle, cost centre) set once</li>
+          <li>Date auto-filled — editable if needed</li>
+          <li>Table overview of all expenses and their status</li>
+          <li>Save or report all expenses in a single action</li>
+          <li>Complaint tickets dropped dramatically. Peace restored.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="img-placeholder tall reveal" style="margin-top: 2rem;">
+      <span>↑ Add your before/after wireframe or design image here</span>
+    </div>
+  </div>
+</div>
+
+<!-- DESIGN DECISIONS -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">Key Design Decisions</div>
+    <h2 class="section-title reveal">Four calls that made the feature work</h2>
+    <div class="decisions-grid reveal">
+      <div class="decision-card">
+        <div class="decision-num">01</div>
+        <div class="decision-title">Auto-filled date with amendment option</div>
+        <div class="decision-desc">Since 93% of users travel daily, the date defaults to today. But the amendment option is front-and-centre — not buried — for the 7% who batch-enter expenses later.</div>
+      </div>
+      <div class="decision-card">
+        <div class="decision-num">02</div>
+        <div class="decision-title">Constant input fields</div>
+        <div class="decision-desc">Vehicle type, cost centre, and project are set once at the top and applied to all rows. Stops users from re-entering the same data 20 times. This alone probably saved hours per user per month.</div>
+      </div>
+      <div class="decision-card">
+        <div class="decision-num">03</div>
+        <div class="decision-title">Table view over form stacking</div>
+        <div class="decision-desc">Instead of a form that grows infinitely downward, all entries live in a scannable table. Users can see everything at once: what's saved, what's pending, what needs attention.</div>
+      </div>
+      <div class="decision-card">
+        <div class="decision-num">04</div>
+        <div class="decision-title">Bulk save or report action</div>
+        <div class="decision-desc">One action at the end covers all entries. No more submitting one by one. The success state confirms everything went through cleanly — no ambiguity, no second-guessing.</div>
+      </div>
+    </div>
+    <div class="img-placeholder tall reveal">
+      <span>↑ Add your final design screens here</span>
+    </div>
+  </div>
+</div>
+
+<!-- TESTING -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">Usability Testing</div>
+    <h2 class="section-title reveal">We broke it so users didn't have to</h2>
+    <div class="section-body reveal">
+      <p>The prototype was tested via Maze with teammates and peers. After the first round of testing, two issues surfaced:</p>
+      <p><strong>Issue 1:</strong> Users were confused about whether the date field referred to when the expense was incurred or when it was being reported. Fixed with clearer labelling.</p>
+      <p><strong>Issue 2:</strong> Adding multiple cost centres, projects, and vehicle types simultaneously caused errors. The UI wasn't clear enough about scope. Fixed by making the "constant" logic more visually obvious.</p>
+      <p>Iterated, retested, shipped. Classic.</p>
+    </div>
+    <div class="img-placeholder tall reveal">
+      <span>↑ Add your Maze testing screenshots here</span>
+    </div>
+  </div>
+</div>
+
+<!-- COMPETITIVE ANALYSIS -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">Competitive Analysis</div>
+    <h2 class="section-title reveal">How Fyle stacked up</h2>
+    <div class="section-body reveal">
+      <p>We analysed direct and indirect competitors — Zoho Expense and Expensify — to understand the market baseline.</p>
+    </div>
+    <div class="insights-list reveal">
+      <div class="insight-item">
+        <div class="insight-icon">✅</div>
+        <div class="insight-text"><strong>Number input field</strong> — Fyle's new feature. Competitors didn't have a dedicated bulk entry mode.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">✅</div>
+        <div class="insight-text"><strong>Auto-filled date</strong> — Unique to this design. Neither Zoho nor Expensify defaulted to today's date intelligently.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">✅</div>
+        <div class="insight-text"><strong>Auto-check for reimbursement</strong> — Reduced a decision users had to make every time.</div>
+      </div>
+      <div class="insight-item">
+        <div class="insight-icon">✅</div>
+        <div class="insight-text"><strong>Inline expense removal</strong> — Icon-level delete right in the table row, no navigation required.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAKEAWAYS -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">Takeaways</div>
+    <h2 class="section-title reveal">What this project taught me</h2>
+    <div class="learnings-list reveal">
+      <div class="learning-item">
+        <div class="learning-num">01</div>
+        <div>
+          <div class="learning-title">Listen to the tickets, not just the users</div>
+          <div class="learning-desc">500 support tickets are 500 user interviews you didn't have to schedule. The signal was right there. The solution was in understanding the pattern, not just the complaints.</div>
+        </div>
+      </div>
+      <div class="learning-item">
+        <div class="learning-num">02</div>
+        <div>
+          <div class="learning-title">One insight can unlock the whole design</div>
+          <div class="learning-desc">The 93% daily-travel stat reframed everything. Auto-filling the date wasn't a small UX tweak — it was the central insight that made bulk entry feel effortless instead of just "less bad".</div>
+        </div>
+      </div>
+      <div class="learning-item">
+        <div class="learning-num">03</div>
+        <div>
+          <div class="learning-title">Consider all stakeholders — including support</div>
+          <div class="learning-desc">This project involved product, engineering, and the support team. The customer support team had the richest data on user pain. Looping them in earlier would have accelerated the research phase.</div>
+        </div>
+      </div>
+      <div class="learning-item">
+        <div class="learning-num">04</div>
+        <div>
+          <div class="learning-title">Confusion in testing is a gift</div>
+          <div class="learning-desc">The date field confusion found in Maze testing was a real problem — and catching it before shipping saved users from making errors in their actual expense reports. Test early, break it yourself first.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NEXT PROJECT -->
+<div class="container">
+  <a href="hoshaksham-case-study.html" class="next-project reveal">
+    <div>
+      <div class="next-label">Next Case Study</div>
+      <div class="next-title">Hoshaksham — Payments App</div>
+    </div>
+    <div class="next-arrow">→</div>
+  </a>
+</div>
+
+<footer>
+  <span class="footer-name">Shyani Pal</span>
+  <span>© 2025 · Product Designer</span>
+  <div class="footer-links">
+    <a href="mailto:shyanipal06@gmail.com">Email</a>
+    <a href="#">LinkedIn</a>
+    <a href="index.html">Home</a>
+  </div>
+</footer>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.06 });
+reveals.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
