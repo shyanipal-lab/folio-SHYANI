@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hoshaksham — Case Study · Shyani Pal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f2f0eb;
+  --bg-card: #e8e5de;
+  --ink: #111110;
+  --ink-2: #5a5851;
+  --ink-3: #9a9690;
+  --accent: #e8441c;
+  --accent-2: #3b5bdb;
+  --yellow: #f5c842;
+  --green: #2a9d5c;
+  --purple: #7c4ddb;
+  --line: rgba(17,17,16,0.1);
+  --line-strong: rgba(17,17,16,0.18);
+  --radius-sm: 10px;
+  --radius: 18px;
+  --radius-lg: 28px;
+  --radius-xl: 40px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+.cursor {
+  width: 10px; height: 10px;
+  background: var(--purple);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s, height 0.25s;
+  mix-blend-mode: multiply;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.18s cubic-bezier(.25,.8,.25,1), width 0.3s, height 0.3s;
+  opacity: 0.5;
+}
+.grain {
+  position: fixed; inset: -50%;
+  width: 200%; height: 200%;
+  pointer-events: none; z-index: 9000;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 0.5s steps(2) infinite;
+}
+@keyframes grain {
+  0%,100%{transform:translate(0,0)} 10%{transform:translate(-2%,-3%)} 30%{transform:translate(3%,1%)} 50%{transform:translate(-1%,4%)} 70%{transform:translate(4%,-2%)} 90%{transform:translate(-3%,2%)}
+}
+
+nav {
+  position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%);
+  z-index: 500;
+  display: flex; align-items: center; gap: 0.25rem;
+  background: rgba(242,240,235,0.9);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--line-strong);
+  border-radius: 100px;
+  padding: 0.35rem 0.35rem;
+}
+.nav-link {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.8rem; font-weight: 500;
+  color: var(--ink-2);
+  text-decoration: none;
+  padding: 0.45rem 1rem;
+  border-radius: 100px;
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.nav-link.back {
+  background: var(--bg-card);
+  color: var(--ink);
+}
+.nav-link.back:hover { background: var(--ink); color: var(--bg); }
+.nav-link:hover { color: var(--ink); }
+
+.container { max-width: 800px; margin: 0 auto; padding: 0 2rem; }
+.container-wide { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+/* HERO — purple tinted for Hoshaksham */
+.cs-hero {
+  padding: 8rem 0 4rem;
+  border-bottom: 1px solid var(--line-strong);
+}
+.cs-eyebrow {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.cs-eyebrow::before {
+  content: '';
+  width: 24px; height: 2px;
+  background: var(--purple);
+  display: inline-block;
+}
+.cs-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+}
+.cs-title em {
+  font-style: italic;
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 400;
+  color: var(--ink-3);
+}
+.cs-subtitle {
+  font-size: 1.15rem;
+  line-height: 1.75;
+  color: var(--ink-2);
+  max-width: 60ch;
+  margin-bottom: 2.5rem;
+}
+.cs-meta {
+  display: flex; gap: 0.75rem; flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+.meta-pill {
+  display: flex; flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 0.85rem 1.25rem;
+  min-width: 130px;
+}
+.meta-pill-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 0.3rem;
+}
+.meta-pill-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.88rem; font-weight: 700;
+  color: var(--ink);
+}
+.cs-hero-img {
+  width: 100%;
+  aspect-ratio: 16/7;
+  background: #1a1025;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--line-strong);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  margin-top: 1rem;
+}
+.cs-hero-img-inner {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+}
+
+/* IMPACT */
+.impact-banner {
+  background: var(--purple);
+  color: white;
+  border-radius: var(--radius-lg);
+  padding: 2rem 2.5rem;
+  display: flex; align-items: center; gap: 2rem;
+  margin: 3rem 0;
+  flex-wrap: wrap;
+}
+.impact-stat { text-align: center; flex: 1; min-width: 120px; }
+.impact-number {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.5rem; font-weight: 800;
+  line-height: 1; margin-bottom: 0.35rem;
+}
+.impact-label { font-size: 0.78rem; opacity: 0.85; line-height: 1.4; }
+.impact-divider {
+  width: 1px; height: 60px;
+  background: rgba(255,255,255,0.25);
+  flex-shrink: 0;
+}
+
+/* SECTIONS */
+.cs-section {
+  padding: 4rem 0;
+  border-bottom: 1px solid var(--line-strong);
+}
+.cs-section:last-of-type { border-bottom: none; }
+
+.section-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 0.6rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.section-label::before {
+  content: '';
+  width: 16px; height: 1.5px;
+  background: var(--ink-3); display: inline-block;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.25rem;
+}
+.section-body {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--ink-2);
+}
+.section-body p + p { margin-top: 1rem; }
+.section-body strong { color: var(--ink); font-weight: 500; }
+
+/* PRIYA EMPATHY */
+.empathy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.empathy-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.empathy-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.empathy-card.says::before { background: var(--purple); }
+.empathy-card.does::before { background: var(--accent-2); }
+.empathy-card.thinks::before { background: var(--yellow); }
+.empathy-card.feels::before { background: var(--green); }
+.empathy-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.empathy-card.says .empathy-label { color: var(--purple); }
+.empathy-card.does .empathy-label { color: var(--accent-2); }
+.empathy-card.thinks .empathy-label { color: #b8960c; }
+.empathy-card.feels .empathy-label { color: var(--green); }
+.empathy-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.empathy-list li {
+  font-size: 0.83rem;
+  color: var(--ink-2);
+  line-height: 1.55;
+  padding-left: 1.1rem;
+  position: relative;
+}
+.empathy-list li::before {
+  content: '·';
+  position: absolute; left: 0;
+  color: var(--ink-3);
+  font-weight: 700;
+}
+
+/* PROBLEMS */
+.problem-list {
+  display: flex; flex-direction: column; gap: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 2rem;
+}
+.problem-item {
+  display: flex; gap: 1.25rem; align-items: flex-start;
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid var(--line-strong);
+  transition: background 0.2s;
+}
+.problem-item:last-child { border-bottom: none; }
+.problem-item:hover { background: var(--bg-card); }
+.problem-icon { font-size: 1.35rem; flex-shrink: 0; padding-top: 0.1rem; }
+.problem-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem; font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.problem-desc { font-size: 0.83rem; color: var(--ink-2); line-height: 1.6; }
+
+/* UX PRINCIPLES */
+.principles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.principle-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.principle-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.07); }
+.principle-badge {
+  display: inline-block;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  background: rgba(124,77,219,0.1);
+  color: var(--purple);
+  border: 1px solid rgba(124,77,219,0.2);
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  margin-bottom: 0.85rem;
+}
+.principle-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.95rem; font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.principle-desc { font-size: 0.82rem; color: var(--ink-2); line-height: 1.65; }
+
+/* FEATURES */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.feature-card {
+  background: var(--ink);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  color: var(--bg);
+  transition: transform 0.2s;
+}
+.feature-card:hover { transform: translateY(-3px); }
+.feature-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.feature-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem; font-weight: 700;
+  margin-bottom: 0.4rem;
+  color: var(--bg);
+}
+.feature-desc { font-size: 0.78rem; color: rgba(242,240,235,0.55); line-height: 1.6; }
+
+/* BEFORE/AFTER PRIYA */
+.priya-journey {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.journey-card {
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  border: 1px solid var(--line-strong);
+}
+.journey-card.before { background: rgba(232,68,28,0.04); border-color: rgba(232,68,28,0.2); }
+.journey-card.after { background: rgba(42,157,92,0.04); border-color: rgba(42,157,92,0.2); }
+.journey-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.journey-card.before .journey-label { color: var(--accent); }
+.journey-card.after .journey-label { color: var(--green); }
+.journey-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 1rem;
+}
+.journey-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.journey-list li {
+  font-size: 0.83rem; color: var(--ink-2); line-height: 1.55;
+  padding-left: 1.25rem; position: relative;
+}
+.journey-card.before .journey-list li::before { content: '✗'; position: absolute; left: 0; color: var(--accent); font-size: 0.7rem; }
+.journey-card.after .journey-list li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-size: 0.7rem; }
+
+/* IMPACT OUTCOMES */
+.outcomes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.outcome-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  display: flex; align-items: flex-start; gap: 1rem;
+}
+.outcome-icon {
+  width: 44px; height: 44px; flex-shrink: 0;
+  background: var(--ink);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+}
+.outcome-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem; font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.outcome-desc { font-size: 0.82rem; color: var(--ink-2); line-height: 1.6; }
+
+/* QUOTE */
+.cs-quote {
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: var(--radius-xl);
+  padding: 3rem;
+  margin: 2rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.cs-quote::before {
+  content: '"';
+  position: absolute; top: -1rem; left: 2rem;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 10rem;
+  color: rgba(255,255,255,0.05);
+  line-height: 1;
+  pointer-events: none;
+}
+.cs-quote-text {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-style: italic;
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+.cs-quote-attr {
+  font-size: 0.78rem;
+  color: rgba(242,240,235,0.5);
+  font-family: 'Syne', sans-serif;
+  font-weight: 500;
+}
+
+/* LEARNINGS */
+.learnings-list {
+  display: flex; flex-direction: column; gap: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 1.5rem;
+}
+.learning-item {
+  display: flex; gap: 1.5rem; align-items: flex-start;
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid var(--line-strong);
+  transition: background 0.2s;
+}
+.learning-item:last-child { border-bottom: none; }
+.learning-item:hover { background: var(--bg-card); }
+.learning-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem; font-weight: 700;
+  color: var(--purple);
+  padding-top: 0.2rem; flex-shrink: 0; min-width: 32px;
+}
+.learning-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem; font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+.learning-desc { font-size: 0.83rem; color: var(--ink-2); line-height: 1.65; }
+
+/* IMG PLACEHOLDER */
+.img-placeholder {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-3);
+  position: relative; overflow: hidden;
+  margin: 1.5rem 0;
+}
+.img-placeholder::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 32px 32px; opacity: 0.5;
+}
+.img-placeholder span {
+  position: relative; z-index: 1;
+  background: var(--bg);
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  border: 1px solid var(--line-strong);
+}
+.img-placeholder.tall { aspect-ratio: 16/9; }
+
+/* NEXT */
+.next-project {
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-xl);
+  padding: 3rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 2rem; flex-wrap: wrap;
+  margin: 3rem 0 5rem;
+  transition: background 0.2s, box-shadow 0.3s;
+  text-decoration: none; color: inherit;
+}
+.next-project:hover { background: var(--ink); box-shadow: 0 20px 48px rgba(0,0,0,0.1); }
+.next-project:hover .next-title { color: var(--bg); }
+.next-project:hover .next-label { color: rgba(242,240,235,0.5); }
+.next-project:hover .next-arrow { background: var(--purple); color: white; border-color: transparent; }
+.next-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 0.5rem;
+  transition: color 0.2s;
+}
+.next-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem; font-weight: 700;
+  letter-spacing: -0.02em; transition: color 0.2s;
+}
+.next-arrow {
+  width: 52px; height: 52px; flex-shrink: 0;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+/* REVEAL */
+.reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.in { opacity: 1; transform: none; }
+
+footer {
+  border-top: 1px solid var(--line-strong);
+  padding: 1.75rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.78rem; color: var(--ink-3);
+  flex-wrap: wrap; gap: 1rem;
+}
+.footer-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700; font-size: 0.85rem; color: var(--ink);
+}
+.footer-links { display: flex; gap: 1.75rem; }
+.footer-links a {
+  color: var(--ink-3); text-decoration: none;
+  font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 500;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--ink); }
+
+@media (max-width: 640px) {
+  .empathy-grid, .priya-journey, .outcomes-grid, .principles-grid, .features-grid { grid-template-columns: 1fr; }
+  .impact-banner { flex-direction: column; gap: 1.5rem; }
+  .impact-divider { display: none; }
+  .container, .container-wide { padding: 0 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-link back">← Back</a>
+  <a href="index.html#work" class="nav-link">All Work</a>
+  <a href="fyle-case-study.html" class="nav-link">Prev Case</a>
+</nav>
+
+<!-- HERO -->
+<div class="cs-hero">
+  <div class="container">
+    <div class="cs-eyebrow reveal">SaaS · Service Management · 0 → 1</div>
+    <h1 class="cs-title reveal" style="transition-delay:.05s">
+      Hoshaksham —<br><em>Making admin feel like money</em>
+    </h1>
+    <p class="cs-subtitle reveal" style="transition-delay:.1s">
+      Priya is a yoga teacher. She loves teaching. She hates spreadsheets. She was spending more time chasing payments than leading classes. We built her a way out.
+    </p>
+    <div class="cs-meta reveal" style="transition-delay:.15s">
+      <div class="meta-pill">
+        <span class="meta-pill-label">Type</span>
+        <span class="meta-pill-value">0 → 1 SaaS</span>
+      </div>
+      <div class="meta-pill">
+        <span class="meta-pill-label">Platform</span>
+        <span class="meta-pill-value">Web App</span>
+      </div>
+      <div class="meta-pill">
+        <span class="meta-pill-label">My Role</span>
+        <span class="meta-pill-value">End-to-End Design</span>
+      </div>
+      <div class="meta-pill">
+        <span class="meta-pill-label">Research</span>
+        <span class="meta-pill-value">1 User, Deep Dive</span>
+      </div>
+      <div class="meta-pill">
+        <span class="meta-pill-label">Approach</span>
+        <span class="meta-pill-value">UCD + Co-design</span>
+      </div>
+    </div>
+    <div class="cs-hero-img reveal" style="transition-delay:.2s">
+      <div class="cs-hero-img-inner">
+        <span>↑ Add your hero image here</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IMPACT -->
+<div class="container">
+  <div class="impact-banner reveal">
+    <div class="impact-stat">
+      <div class="impact-number">1</div>
+      <div class="impact-label">user interview that built the whole product</div>
+    </div>
+    <div class="impact-divider"></div>
+    <div class="impact-stat">
+      <div class="impact-number">3</div>
+      <div class="impact-label">core pain points eliminated completely</div>
+    </div>
+    <div class="impact-divider"></div>
+    <div class="impact-stat">
+      <div class="impact-number">0</div>
+      <div class="impact-label">spreadsheets required. Ever again.</div>
+    </div>
+    <div class="impact-divider"></div>
+    <div class="impact-stat">
+      <div class="impact-number">∞</div>
+      <div class="impact-label">yoga classes Priya can now actually focus on</div>
+    </div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">The Product</div>
+    <h2 class="section-title reveal">What is Hoshaksham?</h2>
+    <div class="section-body reveal">
+      <p><em>Ho Saksham</em> (Hindi for "become capable") is a SaaS tool designed for independent service providers — yoga teachers, tutors, personal trainers, coaches — who manage subscribers and need to collect recurring payments without an accounting degree.</p>
+      <p>The core idea: <strong>make it feel like money is being stored in the app</strong>, not like filling out a government form. Built around trust, simplicity, and the reality that most small service providers run their businesses from WhatsApp.</p>
+    </div>
+    <div class="img-placeholder tall reveal">
+      <span>↑ Add your product overview image here</span>
+    </div>
+  </div>
+</div>
+
+<!-- PRIYA -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">Meet Priya</div>
+    <h2 class="section-title reveal">Our one user. Our whole north star.</h2>
+    <div class="section-body reveal">
+      <p>Priya is a 30-something yoga teacher running her own studio. She has 15–20 regular students, monthly subscription plans, and an intense hatred of the phrase "just send the invoice." We built an empathy map to deeply understand her world before touching any wireframes.</p>
+    </div>
+
+    <div class="empathy-grid reveal">
+      <div class="empathy-card says">
+        <div class="empathy-label">What Priya Says</div>
+        <ul class="empathy-list">
+          <li>"I want to focus on my yoga classes, not paperwork."</li>
+          <li>"It's exhausting to track payments manually every month."</li>
+          <li>"I can't remember who has paid or who I need to follow up with."</li>
+          <li>"Why can't this process be simpler?"</li>
+        </ul>
+      </div>
+      <div class="empathy-card does">
+        <div class="empathy-label">What Priya Does</div>
+        <ul class="empathy-list">
+          <li>Uses spreadsheets to track subscriptions but struggles to keep them updated.</li>
+          <li>Manually follows up with students via WhatsApp to ask for payments.</li>
+          <li>Spends hours creating invoices and ensuring they're sent correctly.</li>
+          <li>Occasionally forgets reminders, resulting in late payments.</li>
+        </ul>
+      </div>
+      <div class="empathy-card thinks">
+        <div class="empathy-label">What Priya Thinks</div>
+        <ul class="empathy-list">
+          <li>"Am I missing any payments this month?"</li>
+          <li>"I hope I don't offend my students by constantly asking for money."</li>
+          <li>"This admin work is taking time away from what I love — teaching yoga."</li>
+          <li>"If I could automate this, life would be so much easier."</li>
+        </ul>
+      </div>
+      <div class="empathy-card feels">
+        <div class="empathy-label">What Priya Feels</div>
+        <ul class="empathy-list">
+          <li><strong>Frustrated:</strong> She dreads repetitive subscription management.</li>
+          <li><strong>Overwhelmed:</strong> Disorganised tracking makes her feel out of control.</li>
+          <li><strong>Anxious:</strong> Worrying about missing payments creates stress.</li>
+          <li><strong>Hopeful:</strong> She believes a solution like Hoshaksham could change everything.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEMS -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">The Problems</div>
+    <h2 class="section-title reveal">Three things making Priya's life unnecessarily hard</h2>
+    <div class="problem-list reveal">
+      <div class="problem-item">
+        <div class="problem-icon">💸</div>
+        <div>
+          <div class="problem-title">Asking for money — the awkward bit</div>
+          <div class="problem-desc">Keeping track of who had paid and when was a constant anxiety. Priya had to manually check her spreadsheet, then message students individually. Uncomfortable and error-prone.</div>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">📊</div>
+        <div>
+          <div class="problem-title">Manual tracking in spreadsheets</div>
+          <div class="problem-desc">Service providers relied on spreadsheets to manually track subscribers. This worked until it didn't — which was roughly the third time someone updated the wrong row.</div>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">📄</div>
+        <div>
+          <div class="problem-title">Invoice generation — manual, monthly, miserable</div>
+          <div class="problem-desc">Priya had to manually generate invoices monthly or per-service. Time-consuming, inconsistent, and honestly beneath someone who is also running an actual business.</div>
+        </div>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">❓</div>
+        <div>
+          <div class="problem-title">Uncertainty about who has actually paid</div>
+          <div class="problem-desc">No single source of truth. Priya didn't know the current payment status without digging through WhatsApp messages, spreadsheet rows, and her own memory.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- UX PSYCHOLOGY -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">Design Psychology</div>
+    <h2 class="section-title reveal">The principles that shaped the decisions</h2>
+    <div class="section-body reveal">
+      <p>Rather than applying UX laws rigidly, we used them as lenses to stress-test our thinking. Context-specific insights always won over blanket rules.</p>
+    </div>
+    <div class="principles-grid reveal">
+      <div class="principle-card">
+        <div class="principle-badge">Hick's Law</div>
+        <div class="principle-title">Reduce cognitive load</div>
+        <div class="principle-desc">The dashboard shows only relevant, actionable information. Fewer choices = faster decisions. Priya shouldn't have to think about what to do next — the interface should guide her.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-badge">Zeigarnik Effect</div>
+        <div class="principle-title">Make incomplete tasks visible</div>
+        <div class="principle-desc">Unpaid invoices and pending reminders surface prominently on the dashboard. The discomfort of seeing an unfinished task motivates action — a gentle, guilt-free nudge.</div>
+      </div>
+      <div class="principle-card">
+        <div class="principle-badge">Existing Habit</div>
+        <div class="principle-title">Make it feel like money</div>
+        <div class="principle-desc">The core design metaphor: money being stored in the app. Not forms. Not admin. People are familiar with the idea of money going somewhere — we leaned into that mental model.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KEY FEATURES -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">The Solution</div>
+    <h2 class="section-title reveal">What we actually built</h2>
+    <div class="features-grid reveal">
+      <div class="feature-card">
+        <div class="feature-icon">💳</div>
+        <div class="feature-title">Payment link via WhatsApp</div>
+        <div class="feature-desc">Send a payment link directly to students through WhatsApp. Payment lands in Priya's bank account. No awkward "did you pay?" messages required.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧾</div>
+        <div class="feature-title">Automated monthly invoices</div>
+        <div class="feature-desc">Generate and send invoices automatically. Priya sets it up once. The system handles the rest every month. Hours of admin: gone.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <div class="feature-title">Subscriber & plan management</div>
+        <div class="feature-desc">Create plans, add subscribers, track who's active and who's lapsed — all in one clean dashboard. No spreadsheet expertise required.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Payment overview dashboard</div>
+        <div class="feature-desc">At a glance: total received, pending, upcoming. Priya knows her money status in three seconds without opening a spreadsheet.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔔</div>
+        <div class="feature-title">Smart notifications</div>
+        <div class="feature-desc">Reminders for unpaid invoices surface on the dashboard (Zeigarnik Effect in action). Never forget a follow-up again — the app does it for you.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏦</div>
+        <div class="feature-title">Direct bank account connection</div>
+        <div class="feature-desc">Link a bank account once. All payments route directly. No middleman apps, no manual transfers. The money just… arrives.</div>
+      </div>
+    </div>
+    <div class="img-placeholder tall reveal">
+      <span>↑ Add your key screens / feature highlights image here</span>
+    </div>
+  </div>
+</div>
+
+<!-- PRIYA BEFORE/AFTER -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">Priya's Story</div>
+    <h2 class="section-title reveal">Before and after the solution</h2>
+    <div class="priya-journey reveal">
+      <div class="journey-card before">
+        <div class="journey-label">Before Hoshaksham</div>
+        <div class="journey-name">😰 Stressed Priya</div>
+        <ul class="journey-list">
+          <li>Opens spreadsheet every week to check who's paid</li>
+          <li>Messages students individually asking for payment</li>
+          <li>Manually creates invoices — one by one</li>
+          <li>Forgets to follow up; loses money</li>
+          <li>Spends 3–4 hours/month on admin alone</li>
+          <li>Constantly anxious about missing a payment</li>
+        </ul>
+      </div>
+      <div class="journey-card after">
+        <div class="journey-label">After Hoshaksham</div>
+        <div class="journey-name">🧘 Calm Priya</div>
+        <ul class="journey-list">
+          <li>Opens dashboard — sees everything at a glance</li>
+          <li>Sends payment link via WhatsApp in two taps</li>
+          <li>Invoices generate and send automatically</li>
+          <li>Notifications remind her of anything pending</li>
+          <li>Admin time reduced to minutes per month</li>
+          <li>Focuses on what she actually loves: teaching yoga</li>
+        </ul>
+      </div>
+    </div>
+    <div class="img-placeholder tall reveal">
+      <span>↑ Add your journey/storyboard image here</span>
+    </div>
+  </div>
+</div>
+
+<!-- COMPETITIVE ANALYSIS -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">Competitive Analysis</div>
+    <h2 class="section-title reveal">When there are no direct competitors</h2>
+    <div class="section-body reveal">
+      <p>No product existed that solved Priya's exact problem — subscription management for small independent service providers with a WhatsApp-first payment flow. The closest competitor was Zoho Billing, which is built for businesses 10x Priya's scale and complexity.</p>
+      <p>This was both a validation that the problem was real and underserved, and a reminder that we had to design from first principles rather than benchmarking existing solutions. <strong>When the competition is a sledgehammer, build a scalpel.</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- IMPACT -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">The Impact</div>
+    <h2 class="section-title reveal">What changed for Priya</h2>
+    <div class="outcomes-grid reveal">
+      <div class="outcome-card">
+        <div class="outcome-icon">📉</div>
+        <div>
+          <div class="outcome-title">Fewer errors</div>
+          <div class="outcome-desc">Automated tracking eliminated the manual entry errors that plagued the spreadsheet approach. Priya's payment data is now accurate without any extra effort.</div>
+        </div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">⏱️</div>
+        <div>
+          <div class="outcome-title">Time savings</div>
+          <div class="outcome-desc">Automated invoices and payment links removed hours of monthly admin. Time Priya can now spend teaching, not typing.</div>
+        </div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">😌</div>
+        <div>
+          <div class="outcome-title">Reduced stress</div>
+          <div class="outcome-desc">Knowing exactly who has paid and when — without needing to check — fundamentally changed Priya's relationship with the admin side of her business.</div>
+        </div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">🔔</div>
+        <div>
+          <div class="outcome-title">Zero missed reminders</div>
+          <div class="outcome-desc">The notification system means Priya never forgets to send a reminder or invoice. The Zeigarnik Effect at work: incomplete tasks don't disappear, they surface.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cs-quote reveal" style="margin-top: 2rem;">
+      <div class="cs-quote-text">"Sure, the case study structure might not be perfect. But just like Ho Saksham, we made it work with what we had — and here we are, ready to share the story of how thoughtful design can make life easier, one yoga teacher at a time."</div>
+      <div class="cs-quote-attr">— Shyani, wrapping up the case study with characteristic self-awareness</div>
+    </div>
+  </div>
+</div>
+
+<!-- LEARNINGS -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">Lessons</div>
+    <h2 class="section-title reveal">What this built from scratch actually taught me</h2>
+    <div class="learnings-list reveal">
+      <div class="learning-item">
+        <div class="learning-num">01</div>
+        <div>
+          <div class="learning-title">One deep interview beats a hundred shallow surveys</div>
+          <div class="learning-desc">Working with a single user (Priya) meant we understood her completely. Every design decision traced back to something real she said or did. Qualitative depth over quantitative breadth — especially at zero stage.</div>
+        </div>
+      </div>
+      <div class="learning-item">
+        <div class="learning-num">02</div>
+        <div>
+          <div class="learning-title">Start small, iterate fast</div>
+          <div class="learning-desc">Building around one user's feedback gave us focus and speed. We weren't designing for an abstract user type — we were solving for a specific person with a specific frustration. The clarity made every decision easier.</div>
+        </div>
+      </div>
+      <div class="learning-item">
+        <div class="learning-num">03</div>
+        <div>
+          <div class="learning-title">Apply psychology thoughtfully, not literally</div>
+          <div class="learning-desc">Hick's Law initially pointed us toward maximum simplification. But deeper context revealed that Priya needed organisation, not just reduction. Understanding when to deviate from the rule is the real skill.</div>
+        </div>
+      </div>
+      <div class="learning-item">
+        <div class="learning-num">04</div>
+        <div>
+          <div class="learning-title">Constraints breed creativity</div>
+          <div class="learning-desc">Working with Figma's free tier and experimenting with Framer forced creative problem-solving. Without design system shortcuts, we had to rely on manual consistency checks and reusable components. Turned out to be great discipline.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NEXT -->
+<div class="container">
+  <a href="fyle-case-study.html" class="next-project reveal">
+    <div>
+      <div class="next-label">Previous Case Study</div>
+      <div class="next-title">Fyle — Bulk Mileage Expense Report</div>
+    </div>
+    <div class="next-arrow">←</div>
+  </a>
+</div>
+
+<footer>
+  <span class="footer-name">Shyani Pal</span>
+  <span>© 2025 · Product Designer</span>
+  <div class="footer-links">
+    <a href="mailto:shyanipal06@gmail.com">Email</a>
+    <a href="#">LinkedIn</a>
+    <a href="index.html">Home</a>
+  </div>
+</footer>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.06 });
+reveals.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
