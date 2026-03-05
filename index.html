@@ -648,6 +648,32 @@ section { padding: 5rem 0; }
 .phone-card-inner {
   display: flex; height: 100%; min-height: 420px;
 }
+
+/* ── HOSHAKSHAM FULL-WIDTH CARD ── */
+.hoshaksham-inner {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  padding: 2rem 2rem 2rem 2.25rem;
+  flex: 1;
+}
+.hoshaksham-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+.hoshaksham-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+@media (max-width: 700px) {
+  .hoshaksham-inner { flex-direction: column; gap: 1.5rem; }
+  .hoshaksham-right { display: none; }
+}
 .phone-left {
   flex: 1;
   padding: 1.75rem;
@@ -1279,7 +1305,7 @@ footer {
 
     <div class="work-grid">
 
-      <!-- 1. Fyle — Large dark featured -->
+      <!-- 1. Fyle — large dark featured, spans 7 -->
       <div class="work-card span-7 dark reveal">
         <div class="card-img-wrap" style="background:#1a1a1a">
           <div class="card-img-placeholder" style="background:#1a1a1a">
@@ -1295,14 +1321,14 @@ footer {
           <div class="card-title">Fyle — Bulk Mileage Expense Report</div>
           <div class="card-desc">500+ users were furiously filing mileage expenses by hand. Some were reportedly using Excel. Nobody was okay. I fixed it in 6 weeks — research, ideation, prototyping, shipped.</div>
           <div class="card-footer">
-            <div class="card-metric" style="color:#6ee7a8">500+ complaint tickets resolved. Justice served.</div>
-            <a href="#" class="card-cta">Read case study</a>
+            <div class="card-metric" style="color:#6ee7a8">500+ complaint tickets resolved in one month.</div>
+            <a href="fyle-case-study.html" class="card-cta">Read case study</a>
           </div>
         </div>
       </div>
 
-      <!-- 2. Mercedes / Connectivity -->
-      <div class="work-card span-5 reveal" style="transition-delay:.08s">
+      <!-- 2. Mercedes / Connectivity — spans 5 -->
+      <div class="work-card span-5 reveal" style="transition-delay:.06s">
         <div class="card-img-wrap">
           <div class="card-img-placeholder">
             <span class="ph-label">Case study image → replace</span>
@@ -1317,30 +1343,50 @@ footer {
           <div class="card-title">Connectivity @ Mercedes-Benz R&D</div>
           <div class="card-desc">Designing in-car and connected experiences for millions of vehicles. It's a lot of pressure. The cars are also very fast.</div>
           <div class="card-footer">
+            <div class="card-metric">Shipped in production vehicles globally.</div>
             <a href="#" class="card-cta">View project</a>
           </div>
         </div>
       </div>
 
-      <!-- 3. Hoshaksham — phone card -->
-      <div class="work-card span-6 reveal" style="transition-delay:.04s">
-        <div class="phone-card-inner">
-          <div class="phone-left">
+      <!-- 3. Hoshaksham — full width, merged with SaaS MVP story -->
+      <div class="work-card span-12 reveal" style="transition-delay:.04s">
+        <div class="hoshaksham-inner">
+          <!-- Left: text content -->
+          <div class="hoshaksham-left">
             <div>
-              <div class="card-tags" style="margin-bottom:.75rem">
+              <div class="card-tags" style="margin-bottom:.85rem">
                 <span class="ctag">0 → 1</span>
+                <span class="ctag">SaaS</span>
                 <span class="ctag">Mobile App</span>
                 <span class="ctag accent">Flutter</span>
+                <span class="ctag blue">Case Study</span>
               </div>
-              <div class="card-title">Hoshaksham</div>
-              <div class="card-desc">Built a payments app for group expenses from scratch — Figma to Flutter. 100+ downloads, 0 friendship-ending payment disputes. That's the real metric.</div>
+              <div class="card-title" style="font-size:clamp(1.3rem,2.5vw,1.8rem);margin-bottom:.6rem">Hoshaksham — From one yoga teacher to a live product</div>
+              <div class="card-desc" style="max-width:52ch">One user interview with Priya — a yoga teacher drowning in payment spreadsheets — became a full subscription management SaaS. Figma to Flutter. Zero spreadsheets required. MVP shipped and validated in 8 weeks.</div>
             </div>
-            <div class="card-footer" style="margin-top:1rem">
-              <div class="card-metric">100+ downloads (mom counts as one)</div>
-              <a href="#" class="card-cta">Read case study</a>
+            <div style="display:flex;flex-direction:column;gap:.75rem;margin-top:1.5rem">
+              <div style="display:flex;gap:2rem;flex-wrap:wrap">
+                <div>
+                  <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent);line-height:1">8wk</div>
+                  <div style="font-size:0.72rem;color:var(--ink-2);margin-top:.2rem">first interview → shipped alpha</div>
+                </div>
+                <div>
+                  <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent);line-height:1">1</div>
+                  <div style="font-size:0.72rem;color:var(--ink-2);margin-top:.2rem">user interview that built the whole product</div>
+                </div>
+                <div>
+                  <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent);line-height:1">100+</div>
+                  <div style="font-size:0.72rem;color:var(--ink-2);margin-top:.2rem">downloads (mom counts as one)</div>
+                </div>
+              </div>
+              <div class="card-footer" style="margin-top:.25rem">
+                <a href="hoshaksham-case-study.html" class="card-cta">Read case study</a>
+              </div>
             </div>
           </div>
-          <div class="phone-right">
+          <!-- Right: phone mockup -->
+          <div class="hoshaksham-right">
             <div class="phone-mockup" data-tooltip="Go on, hover me 👋">
               <div class="phone-notch"></div>
               <div class="phone-screen">
@@ -1351,13 +1397,13 @@ footer {
                 <div class="phone-screen-chip short" style="width:60%"></div>
               </div>
             </div>
-            <div style="position:absolute;bottom:.75rem;right:.75rem;font-size:0.65rem;font-family:'Syne',sans-serif;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase">↑ Add app screenshot</div>
+            <div style="font-size:0.62rem;font-family:'Syne',sans-serif;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase;margin-top:.5rem;text-align:center">↑ Add app screenshot</div>
           </div>
         </div>
       </div>
 
-      <!-- 4. Icon story -->
-      <div class="work-card span-6 card-icon-story reveal" style="transition-delay:.12s">
+      <!-- 4. Icon story — spans 6 -->
+      <div class="work-card span-6 card-icon-story reveal" style="transition-delay:.08s">
         <div style="display:flex; flex:1;">
           <div style="flex:1; display:flex; flex-direction:column; justify-content:space-between;">
             <div class="icon-headline">The making<br>of an icon</div>
@@ -1381,30 +1427,8 @@ footer {
         </div>
       </div>
 
-      <!-- 5. SaaS MVP — full width -->
-      <div class="work-card span-8 reveal" style="transition-delay:.06s">
-        <div class="card-img-wrap" style="aspect-ratio:21/8">
-          <div class="card-img-placeholder">
-            <span class="ph-label">Wide case study image → replace</span>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="card-tags">
-            <span class="ctag">SaaS</span>
-            <span class="ctag">0 → 1</span>
-            <span class="ctag">MVP</span>
-          </div>
-          <div class="card-title">Service Management SaaS — From one user to a product</div>
-          <div class="card-desc">Started with a single user interview (yes, one). Defined core flows, built the design system, shipped alpha, iterated on live data. Turns out one good conversation beats a hundred bad surveys.</div>
-          <div class="card-footer">
-            <div class="card-metric">MVP shipped &amp; validated in 8 weeks. One user interview did that.</div>
-            <a href="#" class="card-cta">Read case study</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- 6. Dushu — small -->
-      <div class="work-card span-4 reveal" style="transition-delay:.1s">
+      <!-- 5. Dushu — spans 6 -->
+      <div class="work-card span-6 reveal" style="transition-delay:.1s">
         <div class="card-img-wrap">
           <div class="card-img-placeholder">
             <span class="ph-label">Project image</span>
@@ -1414,9 +1438,10 @@ footer {
           <div class="card-tags">
             <span class="ctag">Mobile</span>
             <span class="ctag">Habit Design</span>
+            <span class="ctag">Behaviour Design</span>
           </div>
           <div class="card-title">Dushu — Reading Habit App</div>
-          <div class="card-desc">Built to make reading a daily habit. Ironic that I designed it in marathon sessions instead of in small daily chunks.</div>
+          <div class="card-desc">Built to make reading a daily habit using streaks, micro-goals, and ritual design. Ironic that I designed it in marathon sessions instead of small daily chunks.</div>
           <div class="card-footer">
             <a href="#" class="card-cta">View project</a>
           </div>
@@ -1633,7 +1658,7 @@ footer {
     <span class="footer-name" style="color:var(--bg);">Shyani Pal</span>
     <span style="font-style:italic;font-size:0.7rem;color:rgba(242,240,235,0.3);">© 2025 · Designed with good taste &amp; questionable sleep schedules</span>
     <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
-      <a href="mailto:shyanipal06@gmail.com" style="color:rgba(242,240,235,0.55);text-decoration:none;font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:500;transition:color 0.2s;" onmouseover="this.style.color='#f2f0eb'" onmouseout="this.style.color='rgba(242,240,235,0.55)'">Email</a>
+      <a href="/cdn-cgi/l/email-protection#7b0813021a15120b1a174b4d3b1c161a121755181416" style="color:rgba(242,240,235,0.55);text-decoration:none;font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:500;transition:color 0.2s;" onmouseover="this.style.color='#f2f0eb'" onmouseout="this.style.color='rgba(242,240,235,0.55)'">Email</a>
       <a href="https://www.linkedin.com/in/shyani/" target="_blank" style="color:rgba(242,240,235,0.55);text-decoration:none;font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:500;transition:color 0.2s;" onmouseover="this.style.color='#f2f0eb'" onmouseout="this.style.color='rgba(242,240,235,0.55)'">LinkedIn</a>
       <a href="resume.html" style="color:rgba(242,240,235,0.55);text-decoration:none;font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:500;transition:color 0.2s;" onmouseover="this.style.color='#f2f0eb'" onmouseout="this.style.color='rgba(242,240,235,0.55)'">Resume</a>
       <a href="https://shyanipal-lab.github.io/folio-SHYANI/fun-vibe-coding.html" target="_blank" style="color:var(--yellow);text-decoration:none;font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;">🕹️ Fun Vibes</a>
@@ -1641,7 +1666,7 @@ footer {
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── CURSOR ──
 const cursor = document.getElementById('cursor');
 const cursorRing = document.getElementById('cursorRing');
