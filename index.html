@@ -112,40 +112,66 @@ body {
 /* ─────────────────────────────────────────
    NAV
 ───────────────────────────────────────── */
+/* ── NAV — pill hover effect (codepen.io/yxwang31/pen/NWYpdxx) ── */
 nav {
   position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%);
   z-index: 500;
-  display: flex; align-items: center; gap: 0.25rem;
-  background: rgba(242,240,235,0.85);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--line-strong);
-  border-radius: 100px;
-  padding: 0.35rem 0.35rem;
 }
-
-.nav-link {
-  font-family: 'Syne', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--ink-2);
-  text-decoration: none;
-  padding: 0.45rem 1rem;
-  border-radius: 100px;
-  transition: color 0.2s, background 0.2s;
-  white-space: nowrap;
+.nav-pill-list {
+  display: flex; align-items: center; gap: 10px; list-style: none;
+  padding: 0.45rem 0.6rem; margin: 0;
+  background: rgba(242,240,235,0.88);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--line-strong); border-radius: 100px;
+  box-shadow: 0 4px 24px rgba(17,17,16,0.08);
 }
-.nav-link:hover { color: var(--ink); }
-.nav-link.active {
-  background: var(--ink);
-  color: var(--bg);
+.nav-pill {
+  position: relative; list-style: none;
+  width: 38px; height: 38px;
+  background: rgba(255,255,255,0.72);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+  border-radius: 38px; cursor: pointer;
+  display: flex; justify-content: center; align-items: center;
+  transition: width 0.45s cubic-bezier(0.4,0,0.2,1), box-shadow 0.45s ease;
+  overflow: hidden; flex-shrink: 0;
 }
-.nav-dot {
-  width: 6px; height: 6px;
-  background: var(--accent);
-  border-radius: 50%;
-  margin: 0 0.25rem;
-  flex-shrink: 0;
+.nav-pill a {
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none; width: 100%; height: 100%;
+  position: relative; z-index: 2;
 }
+.nav-pill::before {
+  content: ""; position: absolute; inset: 0; border-radius: 38px;
+  background: linear-gradient(45deg, var(--ni), var(--nj));
+  opacity: 0; transition: opacity 0.45s ease; z-index: 0;
+}
+.nav-pill::after {
+  content: ""; position: absolute; top: 8px;
+  width: 100%; height: 100%; border-radius: 38px;
+  background: linear-gradient(45deg, var(--ni), var(--nj));
+  transition: opacity 0.45s ease;
+  filter: blur(12px); z-index: -1; opacity: 0;
+}
+.nav-pill:hover          { width: 130px; box-shadow: none; }
+.nav-pill-fun:hover      { width: 148px; }
+.nav-pill:hover::before  { opacity: 1; }
+.nav-pill:hover::after   { opacity: 0.45; }
+.nav-pill-icon {
+  position: absolute; font-size: 1rem; color: var(--ink-2);
+  transition: transform 0.3s ease, opacity 0.2s ease;
+  transition-delay: 0.2s; pointer-events: none; z-index: 2; line-height: 1;
+}
+.nav-pill:hover .nav-pill-icon { transform: scale(0); opacity: 0; transition-delay: 0s; }
+.nav-pill-title {
+  position: absolute; color: #fff;
+  font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap;
+  transform: scale(0); opacity: 0;
+  transition: transform 0.3s ease, opacity 0.2s ease; transition-delay: 0s;
+  pointer-events: none; z-index: 2;
+}
+.nav-pill:hover .nav-pill-title { transform: scale(1); opacity: 1; transition-delay: 0.22s; }
+.nav-pill:first-child { background: rgba(255,138,138,0.1); }
 
 /* ─────────────────────────────────────────
    SECTION COMMON
@@ -292,96 +318,30 @@ section { padding: 5rem 0; }
 }
 
 .hero-illustration {
-  width: 100%;
-  aspect-ratio: 1 / 1.05;
-  background: #111110;
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--line-strong);
-  position: relative;
-  overflow: hidden;
+  width: 100%; aspect-ratio: 1 / 1.05; background: #111110;
+  border-radius: var(--radius-xl); border: 1px solid var(--line-strong);
+  position: relative; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
 }
 .dvo-wrap {
   position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  pointer-events: none; z-index: 1;
-  padding: 2rem 2.5rem;
-  overflow: hidden;
+  display: flex; flex-direction: row;
+  align-items: center; justify-content: space-between;
+  z-index: 1; padding: 2rem 2.5rem; gap: 1rem; overflow: hidden;
 }
-.dvo-text-stack {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0;
-  width: 100%;
-}
-/* ROW 1: "Design" — Hepta Slab Black, huge, coral */
-.dvo-r1 {
-  font-family: 'Hepta Slab', serif;
-  font-weight: 900;
-  font-size: clamp(3.4rem, 10.5vw, 8.5rem);
-  line-height: 0.85;
-  letter-spacing: -0.04em;
-  color: #FF8A8A;
-  white-space: nowrap;
-}
-/* ROW 2: "Vibe" ultra-thin italic + "only" capsule label */
-.dvo-r2 {
-  display: flex;
-  align-items: baseline;
-  gap: 0.28em;
-  margin-top: 0.04em;
-}
-.dvo-vibe {
-  font-family: 'Hepta Slab', serif;
-  font-weight: 100;
-  font-style: italic;
-  font-size: clamp(2.4rem, 7.5vw, 6rem);
-  color: var(--bg);
-  opacity: 0.22;
-  letter-spacing: -0.025em;
-  line-height: 0.9;
-  white-space: nowrap;
-}
-.dvo-only {
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
-  font-size: clamp(0.75rem, 2.2vw, 1.75rem);
-  color: var(--bg);
-  opacity: 0.5;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  margin-bottom: 0.25em;
-}
-/* ROW 3: "Coder" — Syne 800 small-caps + decorative marks */
-.dvo-r3 {
-  display: flex;
-  align-items: center;
-  gap: 0.45em;
-  margin-top: 0.18em;
-}
-.dvo-coder {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: clamp(1rem, 3vw, 2.4rem);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent-2);
-  white-space: nowrap;
-}
-.dvo-asterisk {
-  font-family: 'Hepta Slab', serif;
-  font-weight: 400;
-  font-size: clamp(0.85rem, 2.2vw, 1.8rem);
-  color: var(--bg);
-  opacity: 0.28;
-  line-height: 1;
-}
-.physics-canvas {
-  position: absolute; inset: 0;
-  width: 100% !important; height: 100% !important;
-  z-index: 2;
-}
+.dvo-text-stack { flex-shrink:0; display:flex; flex-direction:column; align-items:flex-start; gap:0; }
+.dvo-r1 { font-family:'Hepta Slab',serif; font-weight:900; font-size:clamp(3.4rem,10.5vw,8.5rem); line-height:0.85; letter-spacing:-0.04em; color:#FF8A8A; white-space:nowrap; }
+.dvo-r2 { display:flex; align-items:baseline; gap:0.28em; margin-top:0.04em; }
+.dvo-vibe { font-family:'Hepta Slab',serif; font-weight:100; font-style:italic; font-size:clamp(2.4rem,7.5vw,6rem); color:var(--bg); opacity:0.22; letter-spacing:-0.025em; line-height:0.9; white-space:nowrap; }
+.dvo-only { font-family:'DM Sans',sans-serif; font-weight:300; font-size:clamp(0.75rem,2.2vw,1.75rem); color:var(--bg); opacity:0.5; letter-spacing:0.22em; text-transform:uppercase; margin-bottom:0.25em; }
+.dvo-r3 { display:flex; align-items:center; gap:0.45em; margin-top:0.18em; }
+.dvo-coder { font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(1rem,3vw,2.4rem); letter-spacing:0.1em; text-transform:uppercase; color:var(--accent-2); white-space:nowrap; }
+.dvo-asterisk { font-family:'Hepta Slab',serif; font-weight:400; font-size:clamp(0.85rem,2.2vw,1.8rem); color:var(--bg); opacity:0.28; line-height:1; }
+.liquid-zone { position:relative; flex:1; height:100%; max-width:52%; display:flex; align-items:center; justify-content:center; pointer-events:all; min-width:0; }
+.liquid-canvas { width:100%; height:100%; display:block; }
+.liquid-hint { position:absolute; bottom:1.5rem; right:1.5rem; font-family:'DM Sans',sans-serif; font-size:0.62rem; font-weight:400; letter-spacing:0.2em; text-transform:uppercase; color:rgba(242,240,235,0.22); pointer-events:none; transition:opacity 0.4s; }
+.liquid-zone:hover .liquid-hint { opacity:0; }
+.physics-canvas { position:absolute; inset:0; width:100% !important; height:100% !important; z-index:2; }
 
 .illus-text {
   position: absolute; inset: 0;
@@ -1233,22 +1193,12 @@ footer {
 .hoshaksham-right { flex-shrink:0; display:flex; flex-direction:column; align-items:center; }
 @media (max-width:700px) { .hoshaksham-inner{flex-direction:column;gap:1.5rem} .hoshaksham-right{display:none} }
 
-/* Hoshaksham real screenshot */
-.hoshi-screen {
-  padding: 0 !important;
-  gap: 0 !important;
-  background: #000 !important;
-  overflow: hidden;
-  border-radius: 0 0 18px 18px;
-}
-.hoshi-screenshot {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top center;
-  display: block;
-  border-radius: 0 0 18px 18px;
-}
+.hoshaksham-inner { display:flex; align-items:center; gap:3rem; padding:2rem 2.25rem; flex:1; }
+.hoshaksham-left  { flex:1; display:flex; flex-direction:column; min-width:0; }
+.hoshaksham-right { flex-shrink:0; display:flex; flex-direction:column; align-items:center; }
+.hoshi-screen { padding:0 !important; gap:0 !important; background:#000 !important; overflow:hidden; border-radius:0 0 18px 18px; }
+.hoshi-screenshot { width:100%; height:100%; object-fit:cover; object-position:top center; display:block; border-radius:0 0 18px 18px; }
+@media (max-width:700px) { .hoshaksham-inner{flex-direction:column;gap:1.5rem} .hoshaksham-right{display:none} .liquid-zone{display:none} }
 </style>
 </head>
 <body>
@@ -1265,14 +1215,23 @@ footer {
 
 <!-- ── NAV ── -->
 <nav>
-  <a href="#hero" class="nav-link active">Home</a>
-  <div class="nav-dot"></div>
-  <a href="#about" class="nav-link">About</a>
-  <div class="nav-dot" style="background:var(--ink-3); opacity:0.4"></div>
-  <a href="#work" class="nav-link">Work</a>
-  <div class="nav-dot" style="background:var(--ink-3); opacity:0.4"></div>
-  <a href="#contact" class="nav-link">Contact</a>
-  <a href="https://shyanipal-lab.github.io/folio-SHYANI/fun-vibe-coding.html" target="_blank" class="nav-link" style="background:var(--yellow);color:#111;font-weight:700;">🕹️ Fun Vibes</a>
+  <ul class="nav-pill-list">
+    <li class="nav-pill" style="--ni:#FF8A8A;--nj:#ff5f6d">
+      <a href="#hero"><span class="nav-pill-icon">✦</span><span class="nav-pill-title">Home</span></a>
+    </li>
+    <li class="nav-pill" style="--ni:#a78bfa;--nj:#7c3aed">
+      <a href="#about"><span class="nav-pill-icon">◎</span><span class="nav-pill-title">About</span></a>
+    </li>
+    <li class="nav-pill" style="--ni:#3b5bdb;--nj:#56CCF2">
+      <a href="#work"><span class="nav-pill-icon">▦</span><span class="nav-pill-title">Work</span></a>
+    </li>
+    <li class="nav-pill" style="--ni:#2a9d5c;--nj:#80FF72">
+      <a href="#contact"><span class="nav-pill-icon">◉</span><span class="nav-pill-title">Contact</span></a>
+    </li>
+    <li class="nav-pill nav-pill-fun" style="--ni:#f5c842;--nj:#ff9a3c">
+      <a href="https://shyanipal-lab.github.io/folio-SHYANI/fun-vibe-coding.html" target="_blank"><span class="nav-pill-icon">🕹</span><span class="nav-pill-title">Fun Vibes</span></a>
+    </li>
+  </ul>
 </nav>
 
 <!-- ──────────────────────────────────────
@@ -1321,7 +1280,6 @@ footer {
     <!-- Right — Illustration -->
     <div class="hero-right reveal" style="transition-delay:.1s">
       <div class="hero-illustration">
-        <!-- Typography: Design Vibe Only Coder -->
         <div class="dvo-wrap">
           <div class="dvo-text-stack">
             <div class="dvo-r1">Design</div>
@@ -1335,14 +1293,14 @@ footer {
               <span class="dvo-asterisk">✦</span>
             </div>
           </div>
+          <div class="liquid-zone">
+            <canvas id="liquidCanvas" class="liquid-canvas"></canvas>
+            <div class="liquid-hint">hover</div>
+          </div>
         </div>
-        <!-- Physics canvas — icons fall with gravity -->
         <canvas id="physicsCanvas" class="physics-canvas"></canvas>
       </div>
     </div>
-
-  </div>
-</div>
 
 <!-- ── CLIENTS MARQUEE ── -->
 <div class="marquee-wrap" aria-hidden="true">
@@ -1381,60 +1339,36 @@ footer {
     </div>
 
     <div class="work-grid">
-
-      <!-- 1. Fyle -->
       <div class="work-card span-7 dark reveal">
-        <div class="card-img-wrap" style="background:#1a1a1a">
-          <div class="card-img-placeholder" style="background:#1a1a1a">
-            <span class="ph-label" style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.3);border-color:rgba(255,255,255,0.1)">Case study image</span>
-          </div>
-        </div>
+        <div class="card-img-wrap" style="background:#1a1a1a"><div class="card-img-placeholder" style="background:#1a1a1a"><span class="ph-label" style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.3);border-color:rgba(255,255,255,0.1)">Case study image</span></div></div>
         <div class="card-body">
-          <div class="card-tags">
-            <span class="ctag">Fintech</span><span class="ctag">Expense Management</span><span class="ctag accent">Case Study</span>
-          </div>
+          <div class="card-tags"><span class="ctag">Fintech</span><span class="ctag">Expense Management</span><span class="ctag accent">Case Study</span></div>
           <div class="card-title">Fyle — Bulk Mileage Expense Report</div>
           <div class="card-desc">500+ users were furiously filing mileage expenses by hand. Some were reportedly using Excel. Nobody was okay. I fixed it in 6 weeks — research, ideation, prototyping, shipped.</div>
-          <div class="card-footer">
-            <div class="card-metric" style="color:#6ee7a8">500+ complaint tickets resolved in one month.</div>
-            <a href="fyle-case-study.html" class="card-cta">Read case study</a>
-          </div>
+          <div class="card-footer"><div class="card-metric" style="color:#6ee7a8">500+ complaint tickets resolved in one month.</div><a href="fyle-case-study.html" class="card-cta">Read case study</a></div>
         </div>
       </div>
-
-      <!-- 2. Mercedes -->
       <div class="work-card span-5 reveal" style="transition-delay:.06s">
         <div class="card-img-wrap"><div class="card-img-placeholder"><span class="ph-label">Case study image</span></div></div>
         <div class="card-body">
-          <div class="card-tags">
-            <span class="ctag">Mobility</span><span class="ctag">Connected Car</span><span class="ctag blue">Enterprise</span>
-          </div>
+          <div class="card-tags"><span class="ctag">Mobility</span><span class="ctag">Connected Car</span><span class="ctag blue">Enterprise</span></div>
           <div class="card-title">Connectivity @ Mercedes-Benz R&amp;D</div>
           <div class="card-desc">Designing in-car and connected experiences for millions of vehicles. It's a lot of pressure. The cars are also very fast.</div>
-          <div class="card-footer">
-            <div class="card-metric">Shipped in production vehicles globally.</div>
-            <a href="#" class="card-cta">View project</a>
-          </div>
+          <div class="card-footer"><div class="card-metric">Shipped in production vehicles globally.</div><a href="#" class="card-cta">View project</a></div>
         </div>
       </div>
-
-      <!-- 3. Hoshaksham — full width -->
       <div class="work-card span-12 reveal" style="transition-delay:.04s">
         <div class="hoshaksham-inner">
           <div class="hoshaksham-left">
-            <div class="card-tags" style="margin-bottom:.85rem">
-              <span class="ctag">0 → 1</span><span class="ctag">SaaS</span><span class="ctag">Mobile App</span><span class="ctag accent">Flutter</span><span class="ctag blue">Case Study</span>
-            </div>
+            <div class="card-tags" style="margin-bottom:.85rem"><span class="ctag">0 → 1</span><span class="ctag">SaaS</span><span class="ctag">Mobile App</span><span class="ctag accent">Flutter</span><span class="ctag blue">Case Study</span></div>
             <div class="card-title" style="font-size:clamp(1.3rem,2.5vw,1.8rem);margin-bottom:.6rem">Hoshaksham — From one yoga teacher to a live product</div>
             <div class="card-desc" style="max-width:52ch">One user interview with Priya — a yoga teacher drowning in payment spreadsheets — became a full subscription management SaaS. Figma to Flutter. Zero spreadsheets required. MVP shipped in 8 weeks.</div>
             <div style="display:flex;gap:2rem;flex-wrap:wrap;margin-top:1.25rem">
-              <div><div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent);line-height:1">8wk</div><div style="font-size:0.72rem;color:var(--ink-2);margin-top:.2rem">first interview to shipped alpha</div></div>
-              <div><div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent);line-height:1">1</div><div style="font-size:0.72rem;color:var(--ink-2);margin-top:.2rem">user interview that built it all</div></div>
-              <div><div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent);line-height:1">100+</div><div style="font-size:0.72rem;color:var(--ink-2);margin-top:.2rem">downloads (mom counts as one)</div></div>
+              <div><div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent);line-height:1">8wk</div><div style="font-size:0.72rem;color:var(--ink-2);margin-top:.2rem">interview to shipped alpha</div></div>
+              <div><div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent);line-height:1">1</div><div style="font-size:0.72rem;color:var(--ink-2);margin-top:.2rem">user interview</div></div>
+              <div><div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent);line-height:1">100+</div><div style="font-size:0.72rem;color:var(--ink-2);margin-top:.2rem">downloads</div></div>
             </div>
-            <div class="card-footer" style="margin-top:1rem">
-              <a href="hoshaksham-case-study.html" class="card-cta">Read case study</a>
-            </div>
+            <div class="card-footer" style="margin-top:1rem"><a href="hoshaksham-case-study.html" class="card-cta">Read case study</a></div>
           </div>
           <div class="hoshaksham-right">
             <div class="phone-mockup hoshi-phone" data-tooltip="The actual app ✓">
@@ -1446,42 +1380,30 @@ footer {
           </div>
         </div>
       </div>
-
-      <!-- 4. Icon story -->
       <div class="work-card span-6 card-icon-story reveal" style="transition-delay:.08s">
         <div style="display:flex;flex:1;">
           <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;">
             <div class="icon-headline">The making<br>of an icon</div>
             <div class="icon-sub">Listen to the story. Reading is so last decade.</div>
-            <div class="card-tags" style="padding:0 1.75rem;margin-top:.5rem">
-              <span class="ctag">Storytelling</span><span class="ctag">Icon Design</span>
-            </div>
+            <div class="card-tags" style="padding:0 1.75rem;margin-top:.5rem"><span class="ctag">Storytelling</span><span class="ctag">Icon Design</span></div>
             <div class="icon-player">
               <div class="play-btn" data-tooltip="Soothing design talk" id="playBtn"></div>
               <div style="flex:1"><div class="player-bar" id="playerBar"></div></div>
               <div class="player-time" id="playerTime">2:34</div>
             </div>
           </div>
-          <div class="icon-preview-wrap">
-            <div class="icon-preview-placeholder">Icon<br>SVG</div>
-            <div class="icon-preview-label">Add SVG</div>
-          </div>
+          <div class="icon-preview-wrap"><div class="icon-preview-placeholder">Icon<br>SVG</div><div class="icon-preview-label">Add SVG</div></div>
         </div>
       </div>
-
-      <!-- 5. Dushu -->
       <div class="work-card span-6 reveal" style="transition-delay:.1s">
         <div class="card-img-wrap"><div class="card-img-placeholder"><span class="ph-label">Project image</span></div></div>
         <div class="card-body">
-          <div class="card-tags">
-            <span class="ctag">Mobile</span><span class="ctag">Habit Design</span><span class="ctag">Behaviour Design</span>
-          </div>
+          <div class="card-tags"><span class="ctag">Mobile</span><span class="ctag">Habit Design</span><span class="ctag">Behaviour Design</span></div>
           <div class="card-title">Dushu — Reading Habit App</div>
           <div class="card-desc">Built to make reading a daily habit using streaks, micro-goals, and ritual design. Ironic that I designed it in marathon sessions instead of small daily chunks.</div>
           <div class="card-footer"><a href="#" class="card-cta">View project</a></div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
@@ -1743,11 +1665,11 @@ document.querySelectorAll('[data-tooltip]').forEach(function(el) {
 
 // ── ACTIVE NAV ──
 var sections = document.querySelectorAll('section[id], div[id]');
-var navLinks  = document.querySelectorAll('.nav-link[href^="#"]');
+var navLinks  = document.querySelectorAll('.nav-pill a[href^="#"]');
 window.addEventListener('scroll', function() {
   var cur = '';
   sections.forEach(function(s) { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
-  navLinks.forEach(function(l) { l.classList.toggle('active', l.getAttribute('href') === '#' + cur); });
+  navLinks.forEach(function(l) { l.closest('.nav-pill').classList.toggle('nav-pill-active', l.getAttribute('href') === '#' + cur); });
 }, { passive: true });
 
 // ── WORK CARD CURSOR ──
@@ -1844,6 +1766,54 @@ document.addEventListener('keydown', function(e) {
 });
 
 // ────────────────────────────────────────────
+
+// ─────────────────────────────────────────────
+// ── LIQUID BLOB CANVAS ──
+// ─────────────────────────────────────────────
+(function() {
+  var lc = document.getElementById('liquidCanvas');
+  if (!lc) return;
+  var ctx = lc.getContext('2d');
+  function resize() {
+    var z = lc.parentElement.getBoundingClientRect();
+    lc.width  = Math.round(z.width)  || 320;
+    lc.height = Math.round(z.height) || 420;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  var BLOBS = [
+    {x:0.50,y:0.50,r:0.30,vx: 0.0011,vy: 0.0009,h:345,s:85,l:72},
+    {x:0.28,y:0.62,r:0.23,vx:-0.0009,vy: 0.0013,h:230,s:70,l:62},
+    {x:0.72,y:0.32,r:0.21,vx: 0.0010,vy:-0.0010,h:350,s:90,l:78},
+    {x:0.50,y:0.78,r:0.17,vx:-0.0013,vy:-0.0008,h:225,s:65,l:55},
+    {x:0.22,y:0.28,r:0.15,vx: 0.0007,vy: 0.0014,h:10, s:82,l:76},
+  ];
+  var mouse = {x:0.5,y:0.5,tx:0.5,ty:0.5,active:false,r:0,tr:0};
+  lc.addEventListener('mouseenter',function(){mouse.active=true;mouse.tr=0.20;});
+  lc.addEventListener('mouseleave',function(){mouse.active=false;mouse.tr=0;});
+  lc.addEventListener('mousemove',function(e){var r=lc.getBoundingClientRect();mouse.tx=(e.clientX-r.left)/r.width;mouse.ty=(e.clientY-r.top)/r.height;});
+  lc.addEventListener('click',function(){mouse.tr=0.38;setTimeout(function(){mouse.tr=mouse.active?0.20:0;},300);});
+  function hsl(h,s,l){s/=100;l/=100;var c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2,r,g,b;if(h<60){r=c;g=x;b=0;}else if(h<120){r=x;g=c;b=0;}else if(h<180){r=0;g=c;b=x;}else if(h<240){r=0;g=x;b=c;}else if(h<300){r=x;g=0;b=c;}else{r=c;g=0;b=x;}return[Math.round((r+m)*255),Math.round((g+m)*255),Math.round((b+m)*255)];}
+  function drawBlob(b,W,H,al){var cx=b.x*W,cy=b.y*H,rad=b.r*Math.min(W,H)*1.4,rgb=hsl(b.h,b.s,b.l),c0='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+(al*0.88)+')',c1='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',0)',g=ctx.createRadialGradient(cx,cy,0,cx,cy,rad);g.addColorStop(0,c0);g.addColorStop(0.45,'rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+(al*0.55)+')');g.addColorStop(1,c1);ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,rad,0,Math.PI*2);ctx.fill();}
+  var t=0;
+  function frame(){
+    t+=0.007;var W=lc.width,H=lc.height;
+    mouse.x+=(mouse.tx-mouse.x)*0.09;mouse.y+=(mouse.ty-mouse.y)*0.09;mouse.r+=(mouse.tr-mouse.r)*0.12;
+    for(var i=0;i<BLOBS.length;i++){var b=BLOBS[i];b.x+=b.vx+Math.sin(t*0.7+i*1.4)*0.00045;b.y+=b.vy+Math.cos(t*0.55+i*1.0)*0.00045;if(mouse.active||mouse.r>0.01){var dx=b.x-mouse.x,dy=b.y-mouse.y,dist=Math.sqrt(dx*dx+dy*dy)+0.001;if(dist<0.45){var f=(1-dist/0.45)*0.0012*(mouse.r>0?2.5:1);b.x+=(dx/dist)*f;b.y+=(dy/dist)*f;}}b.h=(b.h+0.035)%360;var mg=0.04;if(b.x<mg)b.vx=Math.abs(b.vx);if(b.x>1-mg)b.vx=-Math.abs(b.vx);if(b.y<mg)b.vy=Math.abs(b.vy);if(b.y>1-mg)b.vy=-Math.abs(b.vy);}
+    ctx.clearRect(0,0,W,H);
+    for(var i=0;i<BLOBS.length;i++)drawBlob(BLOBS[i],W,H,1.0);
+    if(mouse.r>0.005){var mcx=mouse.x*W,mcy=mouse.y*H,mr=mouse.r*Math.min(W,H)*1.3,mg2=ctx.createRadialGradient(mcx,mcy,0,mcx,mcy,mr);mg2.addColorStop(0,'rgba(255,138,138,0.95)');mg2.addColorStop(0.5,'rgba(255,140,140,0.60)');mg2.addColorStop(1,'rgba(255,138,138,0)');ctx.fillStyle=mg2;ctx.beginPath();ctx.arc(mcx,mcy,mr,0,Math.PI*2);ctx.fill();}
+    var bp=Math.round(Math.min(W,H)*0.048);
+    ctx.filter='blur('+bp+'px) contrast(3.2) saturate(1.3)';
+    ctx.clearRect(0,0,W,H);
+    for(var i=0;i<BLOBS.length;i++)drawBlob(BLOBS[i],W,H,1.0);
+    if(mouse.r>0.005){var mcx2=mouse.x*W,mcy2=mouse.y*H,mr2=mouse.r*Math.min(W,H)*1.2,mg3=ctx.createRadialGradient(mcx2,mcy2,0,mcx2,mcy2,mr2);mg3.addColorStop(0,'rgba(255,138,138,0.95)');mg3.addColorStop(0.5,'rgba(255,140,140,0.70)');mg3.addColorStop(1,'rgba(255,138,138,0)');ctx.fillStyle=mg3;ctx.beginPath();ctx.arc(mcx2,mcy2,mr2,0,Math.PI*2);ctx.fill();}
+    ctx.filter='none';
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
 // ── HERO PHYSICS CANVAS ──
 // ────────────────────────────────────────────
 (function() {
