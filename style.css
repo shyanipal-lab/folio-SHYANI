@@ -1,1 +1,19 @@
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px;
+}
 
+.hero-left {
+  width: 50%;
+}
+
+.hero-right {
+  width: 40%;
+}
+
+.hero-right img {
+  width: 100%;
+  max-width: 450px;
+}
