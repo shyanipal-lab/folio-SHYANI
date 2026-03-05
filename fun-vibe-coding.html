@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fun Vibe Coding · Shyani Pal</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0c0b;
+  --bg-card: #161614;
+  --bg-card-2: #1e1e1b;
+  --ink: #f2f0eb;
+  --ink-2: #9a9690;
+  --ink-3: #5a5851;
+  --accent: #e8441c;
+  --accent-2: #3b5bdb;
+  --yellow: #f5c842;
+  --green: #2a9d5c;
+  --pink: #e84c8b;
+  --line: rgba(242,240,235,0.07);
+  --line-strong: rgba(242,240,235,0.12);
+  --radius-sm: 10px;
+  --radius: 18px;
+  --radius-lg: 28px;
+  --radius-xl: 40px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CURSOR */
+.cursor {
+  width: 10px; height: 10px;
+  background: var(--yellow);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s, height 0.25s, background 0.25s;
+  mix-blend-mode: screen;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(242,240,235,0.4);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.18s cubic-bezier(.25,.8,.25,1), width 0.3s, height 0.3s;
+}
+
+/* SCANLINE OVERLAY */
+.scanlines {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 8999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 1.25rem; left: 50%; transform: translateX(-50%);
+  z-index: 500;
+  display: flex; align-items: center; gap: 0.25rem;
+  background: rgba(12,12,11,0.9);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--line-strong);
+  border-radius: 100px;
+  padding: 0.35rem 0.35rem;
+}
+.nav-link {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.8rem; font-weight: 500;
+  color: var(--ink-2);
+  text-decoration: none;
+  padding: 0.45rem 1rem;
+  border-radius: 100px;
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.nav-link:hover { color: var(--ink); }
+.nav-link.back {
+  background: var(--bg-card-2);
+  color: var(--ink);
+}
+.nav-link.back:hover { background: var(--accent); }
+.nav-dot { width: 4px; height: 4px; background: var(--ink-3); border-radius: 50%; margin: 0 0.1rem; flex-shrink: 0; }
+
+/* HERO */
+.hero {
+  min-height: 100svh;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  padding: 8rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Pixel grid background */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(245,200,66,0.1);
+  border: 1px solid rgba(245,200,66,0.25);
+  border-radius: 100px;
+  padding: 0.4rem 1rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+.badge-dot {
+  width: 6px; height: 6px;
+  background: var(--yellow);
+  border-radius: 50%;
+  animation: pulse-y 1.5s ease-in-out infinite;
+}
+@keyframes pulse-y {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.6); opacity: 0.5; }
+}
+
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+.hero-title .line1 { color: var(--ink); display: block; }
+.hero-title .line2 {
+  color: var(--yellow);
+  display: block;
+  font-style: italic;
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 700;
+}
+.hero-title .line3 {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(242,240,235,0.2);
+  display: block;
+  font-size: 0.7em;
+}
+
+.hero-sub {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--ink-2);
+  max-width: 48ch;
+  margin: 1.5rem auto 2.5rem;
+}
+
+/* Pixel counter */
+.pixel-counter {
+  display: flex; gap: 2rem; justify-content: center;
+  margin-bottom: 0;
+}
+.counter-item { text-align: center; }
+.counter-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem; font-weight: 800;
+  color: var(--yellow);
+  display: block;
+  line-height: 1;
+}
+.counter-label {
+  font-size: 0.7rem;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: 'Syne', sans-serif;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-3);
+  animation: float 2s ease-in-out infinite;
+}
+.scroll-arrow {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--yellow), transparent);
+}
+@keyframes float {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+/* CONTAINER */
+.container { max-width: 1160px; margin: 0 auto; padding: 0 2rem; }
+
+/* SECTION HEADER */
+.sec-header {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line-strong);
+}
+.sec-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 0.5rem;
+}
+.sec-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 700; line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+/* GAMES GRID */
+section { padding: 5rem 0; }
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+}
+
+/* GAME CARD BASE */
+.game-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.35s cubic-bezier(.25,.8,.25,1), box-shadow 0.35s, border-color 0.3s;
+  cursor: none;
+}
+.game-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 32px 64px rgba(0,0,0,0.4);
+}
+.game-card.span-8 { grid-column: span 8; }
+.game-card.span-4 { grid-column: span 4; }
+.game-card.span-6 { grid-column: span 6; }
+.game-card.span-5 { grid-column: span 5; }
+.game-card.span-7 { grid-column: span 7; }
+.game-card.span-12 { grid-column: span 12; }
+
+/* Colour accents per card */
+.game-card.yellow { --glow: rgba(245,200,66,0.15); --glow-border: rgba(245,200,66,0.3); }
+.game-card.red { --glow: rgba(232,68,28,0.15); --glow-border: rgba(232,68,28,0.3); }
+.game-card.blue { --glow: rgba(59,91,219,0.15); --glow-border: rgba(59,91,219,0.3); }
+.game-card.green { --glow: rgba(42,157,92,0.15); --glow-border: rgba(42,157,92,0.3); }
+.game-card.pink { --glow: rgba(232,76,139,0.15); --glow-border: rgba(232,76,139,0.3); }
+.game-card:hover { border-color: var(--glow-border, var(--line-strong)); box-shadow: 0 32px 64px var(--glow, rgba(0,0,0,0.3)), 0 0 0 1px var(--glow-border, transparent); }
+
+/* Game card preview area */
+.game-preview {
+  width: 100%;
+  aspect-ratio: 16/8;
+  background: var(--bg-card-2);
+  position: relative;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Live mini game previews inside cards */
+.preview-canvas {
+  position: absolute; inset: 0;
+}
+.preview-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-3);
+  position: relative; z-index: 2;
+  background: var(--bg-card);
+  padding: 0.35rem 0.75rem;
+  border-radius: 100px;
+  border: 1px solid var(--line-strong);
+}
+
+/* TETRIS PREVIEW (decorative) */
+.tetris-preview {
+  width: 100%; height: 100%;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 2px;
+  padding: 16px;
+  opacity: 0.7;
+}
+.t-cell {
+  border-radius: 3px;
+  transition: background 0.3s;
+}
+.t-cell.filled { animation: cell-pulse 2s ease-in-out infinite; }
+@keyframes cell-pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+
+/* SNAKE PREVIEW (decorative) */
+.snake-preview {
+  width: 100%; height: 100%;
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 1px;
+  padding: 12px;
+}
+.s-cell { border-radius: 2px; }
+.s-cell.snake { background: var(--green); }
+.s-cell.food { background: var(--accent); border-radius: 50%; animation: food-pulse 1s ease-in-out infinite; }
+@keyframes food-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.3)} }
+
+/* Card body */
+.game-body { padding: 1.5rem 1.75rem 1.75rem; }
+.game-tags {
+  display: flex; gap: 0.4rem; flex-wrap: wrap;
+  margin-bottom: 0.85rem;
+}
+.gtag {
+  font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  border: 1px solid;
+}
+.gtag.yellow { color: var(--yellow); background: rgba(245,200,66,0.1); border-color: rgba(245,200,66,0.25); }
+.gtag.red { color: var(--accent); background: rgba(232,68,28,0.1); border-color: rgba(232,68,28,0.25); }
+.gtag.blue { color: #6b8cff; background: rgba(59,91,219,0.1); border-color: rgba(59,91,219,0.25); }
+.gtag.green { color: #4dbb7f; background: rgba(42,157,92,0.1); border-color: rgba(42,157,92,0.25); }
+.gtag.pink { color: #f07db8; background: rgba(232,76,139,0.1); border-color: rgba(232,76,139,0.25); }
+.gtag.dim { color: var(--ink-3); background: rgba(242,240,235,0.05); border-color: rgba(242,240,235,0.1); }
+
+.game-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.2rem; font-weight: 700;
+  line-height: 1.2; letter-spacing: -0.02em;
+  color: var(--ink); margin-bottom: 0.5rem;
+}
+.game-desc {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+  margin-bottom: 1.1rem;
+}
+.game-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 0.75rem;
+}
+.game-stack {
+  display: flex; gap: 0.35rem; flex-wrap: wrap;
+}
+.stack-chip {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem; font-weight: 600;
+  background: rgba(242,240,235,0.05);
+  border: 1px solid var(--line);
+  color: var(--ink-3);
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+}
+.game-cta {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 0.45rem 0.9rem;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 100px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.game-cta:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.game-cta::after { content: '→'; }
+
+/* FEATURED GAME — tall card with live Tetris */
+.game-card.featured {
+  display: flex; flex-direction: column;
+  min-height: 480px;
+}
+.game-card.featured .game-preview {
+  flex: 1;
+  aspect-ratio: unset;
+}
+
+/* WIP BADGE */
+.wip-badge {
+  position: absolute; top: 1rem; right: 1rem; z-index: 10;
+  background: rgba(245,200,66,0.15);
+  border: 1px solid rgba(245,200,66,0.3);
+  border-radius: 100px;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--yellow);
+  padding: 0.25rem 0.65rem;
+}
+.live-badge {
+  position: absolute; top: 1rem; right: 1rem; z-index: 10;
+  background: rgba(42,157,92,0.15);
+  border: 1px solid rgba(42,157,92,0.3);
+  border-radius: 100px;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: #4dbb7f;
+  padding: 0.25rem 0.65rem;
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.live-dot {
+  width: 5px; height: 5px;
+  background: #4dbb7f;
+  border-radius: 50%;
+  animation: pulse-green 1.2s ease-in-out infinite;
+}
+@keyframes pulse-green { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+
+/* THE BIG TETRIS SECTION */
+.tetris-section {
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+}
+.tetris-info {
+  padding: 3rem;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.tetris-headline {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+}
+.tetris-headline em {
+  font-style: italic;
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 400;
+  color: var(--yellow);
+}
+.tetris-body {
+  font-size: 0.95rem;
+  color: var(--ink-2);
+  line-height: 1.75;
+  margin-bottom: 2rem;
+}
+.tetris-controls {
+  background: var(--bg-card-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+.controls-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 0.75rem;
+}
+.controls-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+.key-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 0.5rem;
+  text-align: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem; font-weight: 600;
+  color: var(--ink-2);
+  display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
+}
+.key-btn .key {
+  font-size: 1rem;
+  color: var(--ink);
+}
+.key-btn span { font-size: 0.62rem; color: var(--ink-3); }
+
+/* Live Tetris game canvas area */
+.tetris-game-wrap {
+  background: #0a0a08;
+  border-left: 1px solid var(--line-strong);
+  padding: 1.5rem;
+  display: flex; flex-direction: column; align-items: center; gap: 1rem;
+}
+.tetris-score-bar {
+  width: 100%;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.score-item {
+  text-align: center;
+}
+.score-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem; font-weight: 800;
+  color: var(--yellow);
+  display: block;
+  line-height: 1;
+}
+.score-lbl {
+  font-size: 0.6rem;
+  color: var(--ink-3);
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 0.2rem;
+}
+
+#tetrisCanvas {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  display: block;
+  image-rendering: pixelated;
+}
+
+.tetris-btn {
+  width: 100%;
+  background: var(--yellow);
+  color: #0a0a08;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+.tetris-btn:hover { background: #ffd940; transform: scale(1.02); }
+.tetris-btn:active { transform: scale(0.98); }
+
+/* NEXT PIECE PREVIEW */
+.next-piece-wrap {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem;
+}
+.next-piece-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.6rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+#nextCanvas {
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  image-rendering: pixelated;
+}
+
+/* "ALSO PLAYING WITH" section */
+.experiments-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.exp-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.exp-card:hover { border-color: var(--yellow); transform: translateY(-3px); }
+.exp-icon { font-size: 1.75rem; margin-bottom: 0.75rem; }
+.exp-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem; font-weight: 700;
+  margin-bottom: 0.4rem; color: var(--ink);
+}
+.exp-desc { font-size: 0.8rem; color: var(--ink-2); line-height: 1.6; }
+.exp-tag {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.62rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--yellow);
+}
+
+/* CTA */
+.fun-cta {
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-xl);
+  padding: 4rem;
+  text-align: center;
+  margin: 3rem 0 5rem;
+  position: relative;
+  overflow: hidden;
+}
+.fun-cta::before {
+  content: '';
+  position: absolute; top: -50%; left: 50%; transform: translateX(-50%);
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(245,200,66,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.fun-cta-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+}
+.fun-cta-title em { color: var(--yellow); font-style: italic; font-family: 'Libre Baskerville', serif; }
+.fun-cta-body { font-size: 0.95rem; color: var(--ink-2); max-width: 44ch; margin: 0 auto 2rem; line-height: 1.75; }
+.fun-cta-actions { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.85rem; font-weight: 600;
+  background: var(--yellow); color: #0a0a08;
+  padding: 0.85rem 1.75rem;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-primary:hover { background: #ffd940; transform: translateY(-2px); }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.85rem; font-weight: 600;
+  color: var(--ink);
+  padding: 0.85rem 1.75rem;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 100px;
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-ghost:hover { border-color: var(--ink); background: var(--ink); color: var(--bg); }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--line-strong);
+  padding: 1.75rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.78rem; color: var(--ink-3);
+  flex-wrap: wrap; gap: 1rem;
+}
+.footer-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; color: var(--ink); }
+.footer-links { display: flex; gap: 1.75rem; }
+.footer-links a { color: var(--ink-3); text-decoration: none; font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 500; transition: color 0.2s; }
+.footer-links a:hover { color: var(--ink); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+
+@media (max-width: 960px) {
+  .tetris-section { grid-template-columns: 1fr; }
+  .tetris-game-wrap { border-left: none; border-top: 1px solid var(--line-strong); }
+  .game-card.span-8, .game-card.span-4, .game-card.span-6, .game-card.span-5, .game-card.span-7 { grid-column: span 12; }
+  .experiments-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .container { padding: 0 1.25rem; }
+  section { padding: 3rem 0; }
+  .experiments-grid { grid-template-columns: 1fr; }
+  .fun-cta { padding: 2.5rem 1.5rem; }
+  .tetris-info { padding: 1.75rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="scanlines" aria-hidden="true"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-link back">← Portfolio</a>
+  <div class="nav-dot"></div>
+  <a href="#games" class="nav-link">Games</a>
+  <div class="nav-dot"></div>
+  <a href="#experiments" class="nav-link">Experiments</a>
+  <div class="nav-dot"></div>
+  <a href="mailto:shyanipal06@gmail.com" class="nav-link">Contact</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">
+    <span class="badge-dot"></span>
+    Shyani's side quest
+  </div>
+  <h1 class="hero-title">
+    <span class="line1">Fun</span>
+    <span class="line2">Vibe</span>
+    <span class="line3">Coding</span>
+  </h1>
+  <p class="hero-sub">Where the designer meets the keyboard and builds things purely for the joy of it. No briefs, no stakeholders, no Figma comments at 11pm. Just code and vibes.</p>
+  <div class="pixel-counter">
+    <div class="counter-item">
+      <span class="counter-num">4</span>
+      <span class="counter-label">Games</span>
+    </div>
+    <div class="counter-item">
+      <span class="counter-num">∞</span>
+      <span class="counter-label">Bugs Fixed</span>
+    </div>
+    <div class="counter-item">
+      <span class="counter-num">0</span>
+      <span class="counter-label">Meetings</span>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll to play</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</div>
+
+<!-- ── GAMES ── -->
+<section id="games">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div>
+        <div class="sec-label">Playable Things</div>
+        <h2 class="sec-title">Games I coded from scratch</h2>
+      </div>
+    </div>
+
+    <div class="games-grid">
+
+      <!-- FEATURED: TETRIS — with live game -->
+      <div class="game-card featured yellow span-7 reveal">
+        <div class="live-badge"><span class="live-dot"></span> Playable</div>
+        <div class="game-preview" id="tetrisPreview">
+          <!-- Live mini Tetris preview decorative -->
+          <div class="tetris-preview" id="miniTetris"></div>
+        </div>
+        <div class="game-body">
+          <div class="game-tags">
+            <span class="gtag yellow">Puzzle</span>
+            <span class="gtag dim">Classic</span>
+            <span class="gtag dim">JavaScript</span>
+          </div>
+          <div class="game-title">Falling Bricks (Tetris)</div>
+          <div class="game-desc">The classic, rebuilt from scratch in vanilla JS. All 7 tetrominoes, wall kicks, ghost piece, line clearing, and progressively cruel speed increases. Scroll down to play the full version.</div>
+          <div class="game-footer">
+            <div class="game-stack">
+              <span class="stack-chip">HTML Canvas</span>
+              <span class="stack-chip">Vanilla JS</span>
+              <span class="stack-chip">CSS</span>
+            </div>
+            <a href="#play" class="game-cta">Play now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SNAKE -->
+      <div class="game-card green span-5 reveal" style="transition-delay:.05s">
+        <div class="wip-badge">Coming Soon</div>
+        <div class="game-preview">
+          <div class="snake-preview" id="snakePreview"></div>
+        </div>
+        <div class="game-body">
+          <div class="game-tags">
+            <span class="gtag green">Arcade</span>
+            <span class="gtag dim">JavaScript</span>
+          </div>
+          <div class="game-title">Noodle Panic (Snake)</div>
+          <div class="game-desc">Snake, but the snake is called Gerald and he has opinions. Same gameplay, very different energy. Currently in development — Gerald is still eating the walls.</div>
+          <div class="game-footer">
+            <div class="game-stack">
+              <span class="stack-chip">Canvas API</span>
+              <span class="stack-chip">JS</span>
+            </div>
+            <a href="#" class="game-cta" style="opacity:0.5; pointer-events:none">Soon</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEMORY MATCH -->
+      <div class="game-card pink span-5 reveal" style="transition-delay:.08s">
+        <div class="wip-badge">Coming Soon</div>
+        <div class="game-preview" style="background: #130d10;">
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px; padding:20px; width:100%; height:100%;">
+            <div style="background:rgba(232,76,139,0.3); border:1px solid rgba(232,76,139,0.3); border-radius:8px; aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:1.2rem;">🎨</div>
+            <div style="background:rgba(232,76,139,0.3); border:1px solid rgba(232,76,139,0.3); border-radius:8px; aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:1.2rem;">?</div>
+            <div style="background:rgba(232,76,139,0.3); border:1px solid rgba(232,76,139,0.3); border-radius:8px; aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:1.2rem;">🎨</div>
+            <div style="background:rgba(232,76,139,0.1); border:1px dashed rgba(232,76,139,0.2); border-radius:8px; aspect-ratio:1;"></div>
+            <div style="background:rgba(232,76,139,0.1); border:1px dashed rgba(232,76,139,0.2); border-radius:8px; aspect-ratio:1;"></div>
+            <div style="background:rgba(232,76,139,0.3); border:1px solid rgba(232,76,139,0.3); border-radius:8px; aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:1.2rem;">🚗</div>
+            <div style="background:rgba(232,76,139,0.1); border:1px dashed rgba(232,76,139,0.2); border-radius:8px; aspect-ratio:1;"></div>
+            <div style="background:rgba(232,76,139,0.3); border:1px solid rgba(232,76,139,0.3); border-radius:8px; aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:1.2rem;">🚗</div>
+          </div>
+        </div>
+        <div class="game-body">
+          <div class="game-tags">
+            <span class="gtag pink">Memory</span>
+            <span class="gtag dim">Design-themed</span>
+          </div>
+          <div class="game-title">Design Memory Match</div>
+          <div class="game-desc">Memory card game but every card is a design tool, UI pattern, or inside joke that only designers will understand. Figma vs Sketch? Pick the right pair.</div>
+          <div class="game-footer">
+            <div class="game-stack">
+              <span class="stack-chip">JavaScript</span>
+              <span class="stack-chip">CSS Grid</span>
+            </div>
+            <a href="#" class="game-cta" style="opacity:0.5; pointer-events:none">Soon</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- UX QUIZ -->
+      <div class="game-card blue span-7 reveal" style="transition-delay:.1s">
+        <div class="wip-badge">Coming Soon</div>
+        <div class="game-preview" style="background: #080c1a;">
+          <div style="padding:20px; width:100%; display:flex; flex-direction:column; gap:10px;">
+            <div style="font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:700; color:rgba(107,140,255,0.8); margin-bottom:4px;">Question 3 of 10</div>
+            <div style="font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; color:rgba(242,240,235,0.9); line-height:1.4;">Which UX principle states that users prefer fewer choices?</div>
+            <div style="background:rgba(59,91,219,0.15); border:1px solid rgba(59,91,219,0.3); border-radius:8px; padding:0.6rem 0.9rem; font-size:0.8rem; color:rgba(242,240,235,0.7); font-family:'DM Sans',sans-serif;">A. Fitts's Law</div>
+            <div style="background:rgba(59,91,219,0.35); border:1px solid rgba(59,91,219,0.6); border-radius:8px; padding:0.6rem 0.9rem; font-size:0.8rem; color:rgba(107,140,255,1); font-family:'DM Sans',sans-serif; font-weight:500;">B. Hick's Law ✓</div>
+            <div style="background:rgba(59,91,219,0.15); border:1px solid rgba(59,91,219,0.3); border-radius:8px; padding:0.6rem 0.9rem; font-size:0.8rem; color:rgba(242,240,235,0.7); font-family:'DM Sans',sans-serif;">C. Miller's Law</div>
+          </div>
+        </div>
+        <div class="game-body">
+          <div class="game-tags">
+            <span class="gtag blue">Quiz</span>
+            <span class="gtag dim">Educational</span>
+            <span class="gtag dim">UX</span>
+          </div>
+          <div class="game-title">UX Laws Quiz — How well do you know your principles?</div>
+          <div class="game-desc">10 questions on UX laws, cognitive biases, and design principles. Built to brush up before interviews. Smug designers and curious engineers equally welcome.</div>
+          <div class="game-footer">
+            <div class="game-stack">
+              <span class="stack-chip">HTML</span>
+              <span class="stack-chip">CSS</span>
+              <span class="stack-chip">JS</span>
+            </div>
+            <a href="#" class="game-cta" style="opacity:0.5; pointer-events:none">Soon</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── FULL TETRIS GAME ── -->
+<section id="play" style="padding-top:0">
+  <div class="container">
+    <div class="tetris-section reveal">
+      <div class="tetris-info">
+        <div>
+          <div class="sec-label" style="margin-bottom:0.75rem">Playable Right Here</div>
+          <h2 class="tetris-headline">Falling Bricks —<br><em>built from scratch.</em></h2>
+          <p class="tetris-body">A full Tetris implementation in ~200 lines of vanilla JavaScript. All 7 tetromino shapes, colour coding, level progression, score tracking, and the quiet existential dread of a fast-dropping I-piece.</p>
+          <p class="tetris-body" style="margin-bottom:0">Use the keyboard controls or buttons below to play.</p>
+        </div>
+        <div class="tetris-controls">
+          <div class="controls-label">Controls</div>
+          <div class="controls-grid">
+            <div class="key-btn"><span class="key">←→</span><span>Move</span></div>
+            <div class="key-btn"><span class="key">↑</span><span>Rotate</span></div>
+            <div class="key-btn"><span class="key">↓</span><span>Soft Drop</span></div>
+            <div class="key-btn" style="grid-column:span 2"><span class="key">Space</span><span>Hard Drop</span></div>
+            <div class="key-btn"><span class="key">P</span><span>Pause</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="tetris-game-wrap">
+        <div class="tetris-score-bar">
+          <div class="score-item">
+            <span class="score-num" id="scoreDisplay">0</span>
+            <span class="score-lbl">Score</span>
+          </div>
+          <div class="score-item">
+            <span class="score-num" id="levelDisplay">1</span>
+            <span class="score-lbl">Level</span>
+          </div>
+          <div class="score-item">
+            <span class="score-num" id="linesDisplay">0</span>
+            <span class="score-lbl">Lines</span>
+          </div>
+        </div>
+        <canvas id="tetrisCanvas" width="200" height="400"></canvas>
+        <div class="next-piece-wrap">
+          <span class="next-piece-label">Next piece</span>
+          <canvas id="nextCanvas" width="80" height="80"></canvas>
+        </div>
+        <button class="tetris-btn" id="tetrisBtn">▶ Start Game</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIMENTS -->
+<section id="experiments">
+  <div class="container">
+    <div class="sec-header reveal">
+      <div>
+        <div class="sec-label">Also Playing With</div>
+        <h2 class="sec-title">Side experiments</h2>
+      </div>
+    </div>
+    <div class="experiments-grid reveal">
+      <div class="exp-card">
+        <div class="exp-icon">🎨</div>
+        <div class="exp-title">Generative art with CSS</div>
+        <div class="exp-desc">Pure CSS animations that produce different patterns each load. No canvas, no JS, just transforms and keyframes having a crisis.</div>
+        <span class="exp-tag">In progress</span>
+      </div>
+      <div class="exp-card">
+        <div class="exp-icon">🔊</div>
+        <div class="exp-title">Web Audio API jams</div>
+        <div class="exp-desc">Making weird sounds in the browser using the Web Audio API. Turns out you can synthesize surprisingly haunting music with a few oscillators and a delay node.</div>
+        <span class="exp-tag">Exploring</span>
+      </div>
+      <div class="exp-card">
+        <div class="exp-icon">🖱️</div>
+        <div class="exp-title">Cursor physics playground</div>
+        <div class="exp-desc">A page where elements react to mouse movement with spring physics. No libraries, raw vector math and requestAnimationFrame. Very satisfying. Probably useless.</div>
+        <span class="exp-tag">Done-ish</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="container">
+  <div class="fun-cta reveal">
+    <h2 class="fun-cta-title">Want to build something<br><em>ridiculous together?</em></h2>
+    <p class="fun-cta-body">I take on a small number of side projects and collaborations each year. If you have a weird idea or just want to nerdsniped me into building a game, I'm open to it.</p>
+    <div class="fun-cta-actions">
+      <a href="mailto:shyanipal06@gmail.com" class="btn-primary">Send your weird idea</a>
+      <a href="index.html" class="btn-ghost">Back to Portfolio</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-name">Shyani Pal</span>
+  <span style="font-style:italic; font-size:0.7rem">No stakeholders were involved in the making of these games.</span>
+  <div class="footer-links">
+    <a href="mailto:shyanipal06@gmail.com">Email</a>
+    <a href="#">LinkedIn</a>
+    <a href="index.html">Portfolio</a>
+  </div>
+</footer>
+
+<script>
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+(function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+
+// ── REVEAL ──
+const reveals=document.querySelectorAll('.reveal');
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.06});
+reveals.forEach(el=>io.observe(el));
+
+// ── DECORATIVE MINI TETRIS GRID ──
+(function buildMiniTetris(){
+  const grid = document.getElementById('miniTetris');
+  if(!grid) return;
+  const colors = ['#e8441c','#f5c842','#3b5bdb','#2a9d5c','#e84c8b','transparent','transparent','transparent'];
+  const filled = [
+    1,1,1,0,0,1,1,0,0,0,
+    0,1,0,0,1,1,0,0,0,0,
+    1,1,1,0,0,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    1,1,0,0,0,0,1,1,0,0,
+    1,1,0,0,0,1,1,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+  ];
+  const cs = ['#e8441c','#e8441c','#e8441c','','','#3b5bdb','#3b5bdb','','','',
+    '','#e8441c','','','#f5c842','#f5c842','','','','',
+    '#e8441c','#e8441c','#e8441c','','','#f5c842','','','','',
+    '','','','','','','','','','',
+    '#2a9d5c','#2a9d5c','','','','','#e84c8b','#e84c8b','','',
+    '#2a9d5c','#2a9d5c','','','','#e84c8b','#e84c8b','','','',
+    '','','','','','','','','','',
+    '','','','','','','','','','',
+  ];
+  filled.forEach((f,i)=>{
+    const cell=document.createElement('div');
+    cell.className='t-cell'+(f?' filled':'');
+    cell.style.background=f?cs[i]:'rgba(242,240,235,0.03)';
+    cell.style.border=f?'none':'1px solid rgba(242,240,235,0.05)';
+    if(f) cell.style.animationDelay=(Math.random()*2)+'s';
+    grid.appendChild(cell);
+  });
+})();
+
+// ── DECORATIVE SNAKE GRID ──
+(function buildSnakeGrid(){
+  const grid = document.getElementById('snakePreview');
+  if(!grid) return;
+  const snake=[18,17,16,15,14];
+  const food=[45];
+  for(let i=0;i<128;i++){
+    const cell=document.createElement('div');
+    cell.className='s-cell'+(snake.includes(i)?' snake':food.includes(i)?' food':'');
+    cell.style.background=snake.includes(i)?'rgba(42,157,92,0.7)':food.includes(i)?'rgba(232,68,28,0.9)':'rgba(242,240,235,0.03)';
+    cell.style.borderRadius=food.includes(i)?'50%':snake[0]===i?'4px':'2px';
+    grid.appendChild(cell);
+  }
+})();
+
+// ─────────────────────────────────────
+// ── FULL TETRIS GAME ──
+// ─────────────────────────────────────
+const canvas = document.getElementById('tetrisCanvas');
+const ctx = canvas.getContext('2d');
+const nextCanvas = document.getElementById('nextCanvas');
+const nctx = nextCanvas.getContext('2d');
+const COLS=10, ROWS=20, BLOCK=20;
+canvas.width=COLS*BLOCK; canvas.height=ROWS*BLOCK;
+
+const TETROMINOES = {
+  I:{ shape:[[1,1,1,1]], color:'#00d4ff' },
+  O:{ shape:[[1,1],[1,1]], color:'#f5c842' },
+  T:{ shape:[[0,1,0],[1,1,1]], color:'#e84c8b' },
+  S:{ shape:[[0,1,1],[1,1,0]], color:'#2a9d5c' },
+  Z:{ shape:[[1,1,0],[0,1,1]], color:'#e8441c' },
+  J:{ shape:[[1,0,0],[1,1,1]], color:'#3b5bdb' },
+  L:{ shape:[[0,0,1],[1,1,1]], color:'#ff8c00' },
+};
+const KEYS = Object.keys(TETROMINOES);
+
+let board, piece, nextPiece, score, level, lines, gameRunning, paused, dropInterval, lastDrop;
+
+function createBoard(){ return Array.from({length:ROWS},()=>Array(COLS).fill(null)); }
+
+function randomPiece(){
+  const k=KEYS[Math.floor(Math.random()*KEYS.length)];
+  const t=TETROMINOES[k];
+  return { shape:t.shape.map(r=>[...r]), color:t.color, x:Math.floor(COLS/2)-Math.floor(t.shape[0].length/2), y:0 };
+}
+
+function rotate(shape){
+  return shape[0].map((_,i)=>shape.map(r=>r[i]).reverse());
+}
+
+function valid(shape,ox,oy){
+  return shape.every((row,dy)=>row.every((cell,dx)=>{
+    if(!cell) return true;
+    const nx=ox+dx, ny=oy+dy;
+    return nx>=0 && nx<COLS && ny<ROWS && (ny<0 || !board[ny][nx]);
+  }));
+}
+
+function lock(){
+  piece.shape.forEach((row,dy)=>row.forEach((cell,dx)=>{ if(cell && piece.y+dy>=0) board[piece.y+dy][piece.x+dx]=piece.color; }));
+  const cleared = board.reduce((acc,row,i)=>{
+    if(row.every(c=>c)){ acc.push(i); } return acc;
+  },[]);
+  cleared.forEach(i=>{ board.splice(i,1); board.unshift(Array(COLS).fill(null)); });
+  const pts=[0,100,300,500,800];
+  score+=(pts[cleared.length]||0)*level;
+  lines+=cleared.length;
+  level=Math.floor(lines/10)+1;
+  document.getElementById('scoreDisplay').textContent=score;
+  document.getElementById('levelDisplay').textContent=level;
+  document.getElementById('linesDisplay').textContent=lines;
+  piece=nextPiece;
+  nextPiece=randomPiece();
+  drawNext();
+  if(!valid(piece.shape,piece.x,piece.y)){ endGame(); }
+}
+
+function drawBlock(c,x,y,size,context,ghost){
+  if(!c) return;
+  context.fillStyle=ghost?'rgba(255,255,255,0.08)':c;
+  context.fillRect(x*size+1,y*size+1,size-2,size-2);
+  if(!ghost){
+    context.fillStyle='rgba(255,255,255,0.25)';
+    context.fillRect(x*size+1,y*size+1,size-2,3);
+    context.fillRect(x*size+1,y*size+1,3,size-2);
+    context.fillStyle='rgba(0,0,0,0.2)';
+    context.fillRect(x*size+1,y*size+size-4,size-2,3);
+  }
+}
+
+function drawBoard(){
+  ctx.fillStyle='#0a0a08';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  // Grid lines
+  ctx.strokeStyle='rgba(242,240,235,0.04)';
+  ctx.lineWidth=0.5;
+  for(let c=0;c<=COLS;c++){ ctx.beginPath();ctx.moveTo(c*BLOCK,0);ctx.lineTo(c*BLOCK,canvas.height);ctx.stroke(); }
+  for(let r=0;r<=ROWS;r++){ ctx.beginPath();ctx.moveTo(0,r*BLOCK);ctx.lineTo(canvas.width,r*BLOCK);ctx.stroke(); }
+  board.forEach((row,y)=>row.forEach((c,x)=>drawBlock(c,x,y,BLOCK,ctx,false)));
+}
+
+function ghostY(){
+  let gy=piece.y;
+  while(valid(piece.shape,piece.x,gy+1)) gy++;
+  return gy;
+}
+
+function drawPiece(){
+  const gy=ghostY();
+  piece.shape.forEach((row,dy)=>row.forEach((cell,dx)=>{
+    if(cell){
+      if(gy!==piece.y) drawBlock(piece.color,piece.x+dx,gy+dy,BLOCK,ctx,true);
+      drawBlock(piece.color,piece.x+dx,piece.y+dy,BLOCK,ctx,false);
+    }
+  }));
+}
+
+function drawNext(){
+  nctx.fillStyle='#0a0a08';
+  nctx.fillRect(0,0,nextCanvas.width,nextCanvas.height);
+  const s=16;
+  const ox=Math.floor((5-nextPiece.shape[0].length)/2);
+  const oy=Math.floor((5-nextPiece.shape.length)/2);
+  nextPiece.shape.forEach((row,dy)=>row.forEach((cell,dx)=>{ if(cell) drawBlock(nextPiece.color,ox+dx,oy+dy,s,nctx,false); }));
+}
+
+function drawOverlay(msg,sub){
+  ctx.fillStyle='rgba(10,10,8,0.85)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='#f2f0eb';
+  ctx.font='bold 16px Syne, sans-serif';
+  ctx.textAlign='center';
+  ctx.fillText(msg,canvas.width/2,canvas.height/2-10);
+  ctx.fillStyle='#9a9690';
+  ctx.font='11px DM Sans, sans-serif';
+  ctx.fillText(sub,canvas.width/2,canvas.height/2+14);
+}
+
+function gameLoop(ts){
+  if(!gameRunning||paused) return;
+  if(!lastDrop) lastDrop=ts;
+  const speed=Math.max(100,800-level*70);
+  if(ts-lastDrop>speed){ lastDrop=ts; if(valid(piece.shape,piece.x,piece.y+1)) piece.y++; else lock(); }
+  drawBoard(); drawPiece();
+  requestAnimationFrame(gameLoop);
+}
+
+function startGame(){
+  board=createBoard();
+  score=0; level=1; lines=0; paused=false;
+  document.getElementById('scoreDisplay').textContent=0;
+  document.getElementById('levelDisplay').textContent=1;
+  document.getElementById('linesDisplay').textContent=0;
+  piece=randomPiece();
+  nextPiece=randomPiece();
+  drawNext();
+  gameRunning=true; lastDrop=null;
+  document.getElementById('tetrisBtn').textContent='⏸ Pause';
+  requestAnimationFrame(gameLoop);
+}
+
+function endGame(){
+  gameRunning=false;
+  drawBoard();
+  drawOverlay('Game Over','Press Start to try again');
+  document.getElementById('tetrisBtn').textContent='▶ Start Game';
+}
+
+document.getElementById('tetrisBtn').addEventListener('click',()=>{
+  if(!gameRunning){ startGame(); }
+  else { paused=!paused; document.getElementById('tetrisBtn').textContent=paused?'▶ Resume':'⏸ Pause'; if(!paused){lastDrop=null;requestAnimationFrame(gameLoop);} else drawOverlay('Paused','Press Resume to continue'); }
+});
+
+document.addEventListener('keydown',e=>{
+  if(!gameRunning||paused) return;
+  if(e.key==='ArrowLeft'){ if(valid(piece.shape,piece.x-1,piece.y)) piece.x--; }
+  else if(e.key==='ArrowRight'){ if(valid(piece.shape,piece.x+1,piece.y)) piece.x++; }
+  else if(e.key==='ArrowDown'){ if(valid(piece.shape,piece.x,piece.y+1)) piece.y++; else lock(); }
+  else if(e.key==='ArrowUp'){ const r=rotate(piece.shape); if(valid(r,piece.x,piece.y)) piece.shape=r; }
+  else if(e.key===' '){ e.preventDefault(); while(valid(piece.shape,piece.x,piece.y+1)) piece.y++; lock(); }
+  else if(e.key==='p'||e.key==='P'){ document.getElementById('tetrisBtn').click(); }
+  drawBoard(); drawPiece();
+});
+
+// Initial state
+drawOverlay('Falling Bricks','Press Start to play');
+drawNext();
+</script>
+</body>
+</html>
