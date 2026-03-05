@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shyani Pal — Product Designer (a real one)</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 <style>
@@ -1167,6 +1168,8 @@ footer {
   <a href="#work" class="nav-link">Work</a>
   <div class="nav-dot" style="background:var(--ink-3); opacity:0.4"></div>
   <a href="#contact" class="nav-link">Contact</a>
+  <div class="nav-dot" style="background:var(--yellow); opacity:0.7"></div>
+  <a href="fun-vibe-coding.html" class="nav-link" style="background:var(--yellow); color:#111; font-weight:600;">🕹️ Fun Vibes</a>
 </nav>
 
 <!-- ──────────────────────────────────────
@@ -1197,7 +1200,7 @@ footer {
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
           LinkedIn
         </a>
-        <a href="mailto:shyanipal06@gmail.com" class="social-pill" data-tooltip="I check this more than I check my Figma notifications" aria-label="Email">
+        <a href="/cdn-cgi/l/email-protection#0b7863726a65627b6a673b3d4b6c666a626725686466" class="social-pill" data-tooltip="I check this more than I check my Figma notifications" aria-label="Email">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           Email
         </a>
@@ -1294,7 +1297,7 @@ footer {
           <div class="card-desc">500+ users were furiously filing mileage expenses by hand. Some were reportedly using Excel. Nobody was okay. I fixed it in 6 weeks — research, ideation, prototyping, shipped.</div>
           <div class="card-footer">
             <div class="card-metric" style="color:#6ee7a8">500+ complaint tickets resolved. Justice served.</div>
-            <a href="fyle-case-study.html" class="card-cta">Read case study</a>
+            <a href="#" class="card-cta">Read case study</a>
           </div>
         </div>
       </div>
@@ -1335,7 +1338,7 @@ footer {
             </div>
             <div class="card-footer" style="margin-top:1rem">
               <div class="card-metric">100+ downloads (mom counts as one)</div>
-              <a href="hoshaksham-case-study.html" class="card-cta">Read case study</a>
+              <a href="#" class="card-cta">Read case study</a>
             </div>
           </div>
           <div class="phone-right">
@@ -1567,7 +1570,7 @@ footer {
       <h2 class="cta-title">Building something<br>worth getting <em>right?</em></h2>
       <p class="cta-body">I'm currently looking for Senior Product Designer roles at ambitious startups and scale-ups across the UK. If you're working on a meaningful problem (or a mildly chaotic one — I don't judge), let's talk.</p>
       <div class="cta-actions">
-        <a href="mailto:shyanipal06@gmail.com" class="btn-primary">
+        <a href="/cdn-cgi/l/email-protection#681b0011090601180904585e280f05090104460b0705" class="btn-primary">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           Say hello
         </a>
@@ -1583,21 +1586,50 @@ footer {
 <!-- ──────────────────────────────────────
      FOOTER
 ────────────────────────────────────── -->
-<footer>
-  <span class="footer-name">Shyani Pal</span>
-  <span class="footer-joke">© 2025 · Designed with good taste &amp; questionable sleep schedules</span>
-  <div class="footer-links">
-    <a href="mailto:shyanipal06@gmail.com">Email</a>
-    <a href="#">LinkedIn</a>
-    <a href="#">Dribbble</a>
-    <a href="#">Read.cv</a>
+<!-- ──────────────────────────────────────
+     FOOTER WITH MINI TETRIS GAME
+────────────────────────────────────── -->
+<footer id="footer-game" style="flex-direction:column; gap:0; padding:0; background:var(--ink); color:var(--bg); border-top:1px solid var(--line-strong);">
+
+  <!-- Game strip header -->
+  <div style="width:100%; border-bottom:1px solid rgba(242,240,235,0.1); padding:1.25rem 2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <span style="font-family:'Syne',sans-serif; font-size:0.68rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(242,240,235,0.35);">Footer game — you scrolled this far, you deserve it</span>
+      <span style="font-family:'Syne',sans-serif; font-size:0.72rem; color:rgba(242,240,235,0.35);">Score: <span id="ftScore" style="color:var(--yellow); font-weight:700;">0</span></span>
+      <span style="font-family:'Syne',sans-serif; font-size:0.72rem; color:rgba(242,240,235,0.35);">Lvl: <span id="ftLevel" style="color:var(--yellow); font-weight:700;">1</span></span>
+    </div>
+    <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+      <span style="font-family:'Syne',sans-serif; font-size:0.62rem; color:rgba(242,240,235,0.25);">← → · ↑ rotate · Space drop</span>
+      <button id="ftBtn" style="background:var(--yellow); color:var(--ink); border:none; border-radius:100px; font-family:'Syne',sans-serif; font-size:0.72rem; font-weight:700; padding:0.4rem 1.1rem; cursor:pointer; letter-spacing:0.04em;">▶ Play</button>
+    </div>
+  </div>
+
+  <!-- Game canvas -->
+  <div style="width:100%; display:flex; align-items:flex-start; justify-content:center; padding:1rem 2rem 0.75rem; gap:1.5rem; background:#0d0d0b;">
+    <canvas id="ftCanvas" width="200" height="120" style="border:1px solid rgba(242,240,235,0.1); border-radius:8px; image-rendering:pixelated; display:block;"></canvas>
+    <div style="display:flex; flex-direction:column; gap:0.4rem; padding-top:0.1rem;">
+      <div style="font-family:'Syne',sans-serif; font-size:0.58rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:rgba(242,240,235,0.2);">Next</div>
+      <canvas id="ftNext" width="56" height="56" style="border:1px solid rgba(242,240,235,0.08); border-radius:6px; image-rendering:pixelated;"></canvas>
+    </div>
+  </div>
+
+  <!-- Footer links -->
+  <div style="width:100%; padding:1.1rem 2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; border-top:1px solid rgba(242,240,235,0.07);">
+    <span class="footer-name" style="color:var(--bg);">Shyani Pal</span>
+    <span style="font-style:italic; font-size:0.7rem; color:rgba(242,240,235,0.3);">© 2025 · Designed with good taste &amp; questionable sleep schedules</span>
+    <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
+      <a href="mailto:shyanipal06@gmail.com" style="color:rgba(242,240,235,0.45); text-decoration:none; font-family:'Syne',sans-serif; font-size:0.78rem; font-weight:500;">Email</a>
+      <a href="#" style="color:rgba(242,240,235,0.45); text-decoration:none; font-family:'Syne',sans-serif; font-size:0.78rem; font-weight:500;">LinkedIn</a>
+      <a href="#" style="color:rgba(242,240,235,0.45); text-decoration:none; font-family:'Syne',sans-serif; font-size:0.78rem; font-weight:500;">Dribbble</a>
+      <a href="fun-vibe-coding.html" style="color:var(--yellow); text-decoration:none; font-family:'Syne',sans-serif; font-size:0.78rem; font-weight:600;">🕹️ Fun Vibes</a>
+    </div>
   </div>
 </footer>
 
 <!-- ──────────────────────────────────────
      JS
 ────────────────────────────────────── -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Custom cursor
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
@@ -1766,7 +1798,7 @@ document.addEventListener('keydown', e => {
     konamiIndex++;
     if (konamiIndex === konami.length) {
       konamiIndex = 0;
-      showToast('🕹️ Konami code! You have too much free time. Hire me instead.');
+      
       document.body.style.transition = 'filter 0.5s';
       document.body.style.filter = 'hue-rotate(180deg)';
       setTimeout(() => { document.body.style.filter = ''; }, 2000);
@@ -1775,6 +1807,143 @@ document.addEventListener('keydown', e => {
     konamiIndex = 0;
   }
 });
+
+// ── FOOTER MINI TETRIS ──
+(function(){
+  const ftCanvas = document.getElementById('ftCanvas');
+  const ftNext   = document.getElementById('ftNext');
+  const ftBtn    = document.getElementById('ftBtn');
+  if(!ftCanvas) return;
+
+  const fctx = ftCanvas.getContext('2d');
+  const nctx  = ftNext.getContext('2d');
+  const COLS=10, ROWS=6, BK=20;
+  ftCanvas.width=COLS*BK; ftCanvas.height=ROWS*BK;
+
+  const PIECES = {
+    I:{shape:[[1,1,1,1]],color:'#00d4ff'},
+    O:{shape:[[1,1],[1,1]],color:'#f5c842'},
+    T:{shape:[[0,1,0],[1,1,1]],color:'#e84c8b'},
+    S:{shape:[[0,1,1],[1,1,0]],color:'#2a9d5c'},
+    Z:{shape:[[1,1,0],[0,1,1]],color:'#e8441c'},
+    J:{shape:[[1,0,0],[1,1,1]],color:'#6b8cff'},
+    L:{shape:[[0,0,1],[1,1,1]],color:'#ff8c00'},
+  };
+  const PKS=Object.keys(PIECES);
+
+  let board,piece,nextP,score,level,lines,running,paused,lastDrop2;
+
+  function mkBoard(){ return Array.from({length:ROWS},()=>Array(COLS).fill(null)); }
+  function rndPiece(){
+    const k=PKS[Math.floor(Math.random()*PKS.length)];
+    const t=PIECES[k];
+    return{shape:t.shape.map(r=>[...r]),color:t.color,x:Math.floor(COLS/2)-Math.floor(t.shape[0].length/2),y:0};
+  }
+  function rot(s){ return s[0].map((_,i)=>s.map(r=>r[i]).reverse()); }
+  function ok(s,ox,oy){
+    return s.every((row,dy)=>row.every((c,dx)=>{
+      if(!c)return true;
+      const nx=ox+dx,ny=oy+dy;
+      return nx>=0&&nx<COLS&&ny<ROWS&&(ny<0||!board[ny][nx]);
+    }));
+  }
+  function lock2(){
+    piece.shape.forEach((row,dy)=>row.forEach((c,dx)=>{if(c&&piece.y+dy>=0)board[piece.y+dy][piece.x+dx]=piece.color;}));
+    const cl=[];
+    board.forEach((row,i)=>{if(row.every(c=>c))cl.push(i);});
+    cl.forEach(i=>{board.splice(i,1);board.unshift(Array(COLS).fill(null));});
+    const pts=[0,100,300,500,800];
+    score+=(pts[cl.length]||0)*level;
+    lines+=cl.length;
+    level=Math.floor(lines/10)+1;
+    document.getElementById('ftScore').textContent=score;
+    document.getElementById('ftLevel').textContent=level;
+    piece=nextP; nextP=rndPiece(); drawN();
+    if(!ok(piece.shape,piece.x,piece.y))endFt();
+  }
+  function drawBk(c,x,y,sz,context,ghost){
+    if(!c)return;
+    context.fillStyle=ghost?'rgba(255,255,255,0.07)':c;
+    context.fillRect(x*sz+1,y*sz+1,sz-2,sz-2);
+    if(!ghost){
+      context.fillStyle='rgba(255,255,255,0.2)';
+      context.fillRect(x*sz+1,y*sz+1,sz-2,2);
+    }
+  }
+  function drawAll(){
+    fctx.fillStyle='#0a0a08';
+    fctx.fillRect(0,0,ftCanvas.width,ftCanvas.height);
+    fctx.strokeStyle='rgba(242,240,235,0.04)';
+    fctx.lineWidth=0.5;
+    for(let c=0;c<=COLS;c++){fctx.beginPath();fctx.moveTo(c*BK,0);fctx.lineTo(c*BK,ftCanvas.height);fctx.stroke();}
+    for(let r=0;r<=ROWS;r++){fctx.beginPath();fctx.moveTo(0,r*BK);fctx.lineTo(ftCanvas.width,r*BK);fctx.stroke();}
+    board.forEach((row,y)=>row.forEach((c,x)=>drawBk(c,x,y,BK,fctx,false)));
+    // ghost
+    let gy=piece.y;
+    while(ok(piece.shape,piece.x,gy+1))gy++;
+    piece.shape.forEach((row,dy)=>row.forEach((c,dx)=>{if(c){if(gy!==piece.y)drawBk(piece.color,piece.x+dx,gy+dy,BK,fctx,true);drawBk(piece.color,piece.x+dx,piece.y+dy,BK,fctx,false);}}));
+  }
+  function drawN(){
+    nctx.fillStyle='#0a0a08';
+    nctx.fillRect(0,0,ftNext.width,ftNext.height);
+    const sz=14;
+    const ox=Math.floor((4-nextP.shape[0].length)/2);
+    const oy=Math.floor((4-nextP.shape.length)/2);
+    nextP.shape.forEach((row,dy)=>row.forEach((c,dx)=>{if(c)drawBk(nextP.color,ox+dx,oy+dy,sz,nctx,false);}));
+  }
+  function overlay(msg){
+    fctx.fillStyle='rgba(10,10,8,0.82)';
+    fctx.fillRect(0,0,ftCanvas.width,ftCanvas.height);
+    fctx.fillStyle='#f2f0eb';
+    fctx.font='bold 13px Syne,sans-serif';
+    fctx.textAlign='center';
+    fctx.fillText(msg,ftCanvas.width/2,ftCanvas.height/2+4);
+  }
+  function gameLoop2(ts){
+    if(!running||paused)return;
+    if(!lastDrop2)lastDrop2=ts;
+    const spd=Math.max(100,700-level*60);
+    if(ts-lastDrop2>spd){lastDrop2=ts;if(ok(piece.shape,piece.x,piece.y+1))piece.y++;else lock2();}
+    drawAll();
+    requestAnimationFrame(gameLoop2);
+  }
+  function startFt(){
+    board=mkBoard();score=0;level=1;lines=0;paused=false;
+    document.getElementById('ftScore').textContent=0;
+    document.getElementById('ftLevel').textContent=1;
+    piece=rndPiece();nextP=rndPiece();drawN();
+    running=true;lastDrop2=null;
+    ftBtn.textContent='⏸ Pause';
+    requestAnimationFrame(gameLoop2);
+  }
+  function endFt(){
+    running=false;drawAll();overlay('Game Over');
+    ftBtn.textContent='▶ Play';
+  }
+
+  ftBtn.addEventListener('click',()=>{
+    if(!running){startFt();}
+    else{paused=!paused;ftBtn.textContent=paused?'▶ Resume':'⏸ Pause';if(!paused){lastDrop2=null;requestAnimationFrame(gameLoop2);}else overlay('Paused');}
+  });
+
+  // Keyboard - only when footer is in view
+  document.addEventListener('keydown',e=>{
+    if(!running||paused)return;
+    const rect=ftCanvas.getBoundingClientRect();
+    const inView=rect.top<window.innerHeight&&rect.bottom>0;
+    if(!inView)return;
+    if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key))e.preventDefault();
+    if(e.key==='ArrowLeft'){if(ok(piece.shape,piece.x-1,piece.y))piece.x--;}
+    else if(e.key==='ArrowRight'){if(ok(piece.shape,piece.x+1,piece.y))piece.x++;}
+    else if(e.key==='ArrowDown'){if(ok(piece.shape,piece.x,piece.y+1))piece.y++;else lock2();}
+    else if(e.key==='ArrowUp'){const r=rot(piece.shape);if(ok(r,piece.x,piece.y))piece.shape=r;}
+    else if(e.key===' '){while(ok(piece.shape,piece.x,piece.y+1))piece.y++;lock2();}
+    drawAll();
+  });
+
+  overlay('▶ Play');
+  drawN();
+})();
 </script>
 </body>
 </html>
