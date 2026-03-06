@@ -531,9 +531,9 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
       <div class="about-content reveal" style="transition-delay:.1s">
         <h2 class="about-headline">I help teams make better decisions through design.<span>(I also have opinions about font sizes. Everyone knows.)</span></h2>
         <div class="about-body">
-          <p>I'm Shyani — a product designer with <strong>4+ years</strong> of experience across enterprise mobility, fintech, and consumer apps. I'm currently designing in-car and connected experiences at <strong>Mercedes-Benz R&D</strong> in Bengaluru, where my commute and my job description are ironically disconnected.</p>
-          <p>My approach is <strong>commercially aware</strong> and pragmatic. I work closely with PMs and engineers, push back when needed, and ship work I'm proud of. I'm not precious about ideas — I care about outcomes. (My stakeholders appreciate this. Mostly.)</p>
-          <p>I'm actively exploring <strong>Senior Product Designer</strong> roles at ambitious startups and scale-ups across the UK — whether in London, hybrid, or fully remote. If you're building something meaningful and occasionally chaotic, we'll get along.</p>
+          <p>I'm Shyani — a product designer with <strong>5+ years</strong> of experience across enterprise mobility, fintech, and consumer apps. I'm currently designing in-car and connected experiences at <strong>Mercedes-Benz R&D</strong> in Bengaluru, where my commute and my job description are ironically disconnected.</p>
+          <p>My approach is <strong>commercially aware</strong> and pragmatic. I work closely with PMs and engineers, push back when needed, and ship work I'm proud of. I'm not precious about ideas, I care about outcomes. (My stakeholders appreciate this. Mostly.)</p>
+          <p>I'm actively exploring <strong>Senior Product Designer</strong> roles at ambitious startups and scale ups across the UK, whether in London, hybrid, or fully remote. If you're building something meaningful and occasionally chaotic, we'll get along.</p>
         </div>
         <div class="skills-row">
           <div class="skill-box" data-tooltip="The whole thing. Start to finish.">
@@ -673,17 +673,17 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
 </footer>
 
 <script>
-// ── HERO BRICK ANIMATION v3 ──
-// Bricks fall from top and stack to EXACTLY form the pixel-font letters.
-// Each falling piece targets a specific column of the letter grid so the
-// fill looks intentional — bricks rain down and build the words.
+// ── HERO BRICK ANIMATION ──────────────────────────────────────────────────
+// Strategy: treat each COLUMN independently.
+// For each column, collect all target rows (top→bottom).
+// Drop bricks one at a time per column: each brick falls from the top
+// and lands on the lowest unfilled target row in that column.
+// This guarantees every brick lands exactly where the letter pixel is.
 (function () {
-  'use strict';
 
   var canvas = document.getElementById('brickCanvas');
   if (!canvas) return;
 
-  // ── 5×7 dot-matrix pixel font ──────────────────────────────────────────────
   var FONT = {
     A:[[0,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1]],
     B:[[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,0],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,0]],
@@ -708,251 +708,230 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
     V:[[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[0,1,0,1,0],[0,1,0,1,0],[0,0,1,0,0],[0,0,1,0,0]],
     W:[[1,0,0,0,1],[1,0,0,0,1],[1,0,1,0,1],[1,0,1,0,1],[1,1,0,1,1],[1,0,0,0,1],[1,0,0,0,1]],
     Y:[[1,0,0,0,1],[1,0,0,0,1],[0,1,0,1,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0],[0,0,1,0,0]],
+    Z:[[1,1,1,1,1],[0,0,0,0,1],[0,0,0,1,0],[0,0,1,0,0],[0,1,0,0,0],[1,0,0,0,0],[1,1,1,1,1]],
     ' ':[[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]]
   };
 
-  // ── Text lines & colours ───────────────────────────────────────────────────
-  // Each line is [text, solidColour, dimColour]
   var LINES = [
-    { text: 'DESIGN',    solid: '#FF8A8A', dim: 'rgba(255,138,138,0.18)' },
-    { text: 'VIBE ONLY', solid: '#e8e5de', dim: 'rgba(232,229,222,0.10)' },
-    { text: 'CODER',     solid: '#6b8cff', dim: 'rgba(107,140,255,0.18)' }
+    { text:'DESIGN',    solid:'#FF8A8A', dim:'rgba(255,138,138,0.15)' },
+    { text:'VIBE ONLY', solid:'#d4d0c8', dim:'rgba(212,208,200,0.10)' },
+    { text:'CODER',     solid:'#6b8cff', dim:'rgba(107,140,255,0.15)' }
   ];
 
-  // Letter-height rows, gap between lines
-  var FROWS = 7, LGAP = 3, CGAP = 1;
-  // Padding rows above the text block
-  var PAD_TOP = 4;
-
+  var FROWS = 7, LGAP = 3, CGAP = 1, PAD_TOP = 3;
   var animId;
 
   function init() {
     if (animId) { cancelAnimationFrame(animId); animId = null; }
 
-    var W = canvas.parentElement.offsetWidth || 800;
-    // brick pixel size — keep between 7 and 13px depending on viewport
-    var BK   = Math.max(7, Math.min(13, Math.floor(W / 76)));
+    var W = canvas.parentElement.offsetWidth || 900;
+    var BK   = Math.max(7, Math.min(12, Math.floor(W / 80)));
     var GAP  = 2;
     var CELL = BK + GAP;
     var COLS = Math.floor(W / CELL);
 
-    // ── Build target grid ─────────────────────────────────────────────────
-    // targetGrid[row][col] = { li, solid, dim } | null
-    var textRows = [];        // rows of the full text block
-    var lineStart = [];       // which row index each line starts at (in textRows)
+    // ── 1. Build pixel grid ──────────────────────────────────────────────
+    // pixelGrid[row][col] = {solid, dim} or null
+    var pixelGrid = [];
+    var totalTextRows = 0;
 
-    LINES.forEach(function (ln, li) {
-      lineStart.push(textRows.length);
-      var word = ln.text.toUpperCase();
-      // measure pixel width of this line
+    LINES.forEach(function(ln, li) {
+      var word = ln.text;
+      // measure line width in pixels
       var pw = 0;
       for (var i = 0; i < word.length; i++) {
         var g = FONT[word[i]] || FONT[' '];
-        pw += g[0].length + (i < word.length - 1 ? CGAP : 0);
+        pw += g[0].length + (i < word.length-1 ? CGAP : 0);
       }
-      // centre offset
       var sx = Math.max(0, Math.floor((COLS - pw) / 2));
-      // add 7 rows for this line
+
       for (var row = 0; row < FROWS; row++) {
-        var gr = [];
-        for (var c = 0; c < COLS; c++) gr.push(null);
+        var gr = new Array(COLS).fill(null);
         var cx = sx;
         for (var ci = 0; ci < word.length; ci++) {
           var glyph = FONT[word[ci]] || FONT[' '];
-          var fw = glyph[0].length;
-          for (var dx = 0; dx < fw; dx++) {
-            var col = cx + dx;
-            if (col >= 0 && col < COLS && glyph[row][dx])
-              gr[col] = { li: li, solid: ln.solid, dim: ln.dim };
+          for (var dx = 0; dx < glyph[0].length; dx++) {
+            if (cx+dx >= 0 && cx+dx < COLS && glyph[row][dx])
+              gr[cx+dx] = { solid: ln.solid, dim: ln.dim };
           }
-          cx += fw + CGAP;
+          cx += glyph[0].length + CGAP;
         }
-        textRows.push(gr);
+        pixelGrid.push(gr);
+        totalTextRows++;
       }
-      // gap after all but last line
       if (li < LINES.length - 1)
-        for (var g2 = 0; g2 < LGAP; g2++) {
-          var empty = [];
-          for (var c2 = 0; c2 < COLS; c2++) empty.push(null);
-          textRows.push(empty);
+        for (var g = 0; g < LGAP; g++) {
+          pixelGrid.push(new Array(COLS).fill(null));
+          totalTextRows++;
         }
     });
 
-    var TROWS = textRows.length;
-    var ROWS  = PAD_TOP + TROWS;
-
+    var ROWS = PAD_TOP + totalTextRows;
     canvas.width  = COLS * CELL;
     canvas.height = ROWS * CELL;
-
     var ctx = canvas.getContext('2d');
 
-    // board: what's been placed (row, col) → { solid, li } | null
+    // ── 2. Per-column queues ─────────────────────────────────────────────
+    // colQueues[c] = array of {row, solid} sorted bottom→top
+    // (we pop from the end = bottom-most first, so bricks stack up correctly)
+    var colQueues = [];
+    for (var c = 0; c < COLS; c++) colQueues.push([]);
+
+    for (var r = 0; r < totalTextRows; r++) {
+      for (var c = 0; c < COLS; c++) {
+        var p = pixelGrid[r][c];
+        if (p) colQueues[c].push({ row: PAD_TOP + r, solid: p.solid });
+      }
+    }
+    // Each col's queue: sort ascending by row (top to bottom in grid)
+    // We'll drop them bottom-to-top: first drop lands at bottom row, next at row above, etc.
+    // So reverse so we can pop() the bottom-most target first.
+    for (var c = 0; c < COLS; c++) {
+      colQueues[c].sort(function(a,b){ return a.row - b.row; });
+      colQueues[c].reverse(); // pop() gives bottom-most target first
+    }
+
+    // board[r][c] = solid color or null
     var board = [];
-    for (var r = 0; r < ROWS; r++) {
-      board.push([]);
-      for (var c = 0; c < COLS; c++) board[r].push(null);
-    }
+    for (var r = 0; r < ROWS; r++) board.push(new Array(COLS).fill(null));
 
-    // ── Build queue of single-brick drops (column by column) ───────────────
-    // Each entry: { col, targetRow, solid, li }
-    // We collect all target cells and sort them left→right, top→bottom
-    // then shuffle slightly for a natural rain effect.
-    var queue = [];
-    for (var r2 = 0; r2 < TROWS; r2++) {
-      for (var c3 = 0; c3 < COLS; c3++) {
-        var t = textRows[r2][c3];
-        if (t) queue.push({ col: c3, targetRow: PAD_TOP + r2, solid: t.solid, li: t.li });
-      }
-    }
-    // Shuffle so bricks fall from random columns rather than left-to-right
-    for (var i = queue.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var tmp = queue[i]; queue[i] = queue[j]; queue[j] = tmp;
-    }
-
-    // ── Active "falling bricks" ────────────────────────────────────────────
-    // Each: { col, y (float), targetRow, solid, speed }
+    // ── 3. Falling brick objects ─────────────────────────────────────────
+    // { col, y, targetRow, solid, speed }
     var fallers = [];
-    var qIdx    = 0;
-    var SPAWN_RATE  = 3;    // new bricks per frame
-    var done = false;
 
-    function getFloorForCol(col, targetRow) {
-      // Find the topmost occupied cell in this col above targetRow
-      for (var r3 = 0; r3 < ROWS; r3++) {
-        if (board[r3][col]) return r3 - 1;
-      }
-      // Nothing placed yet — land exactly at targetRow
-      return targetRow;
+    // Which columns still have bricks left to drop
+    // We'll stagger column activation so not all columns fire at once
+    var activeCols = [];
+    for (var c = 0; c < COLS; c++) {
+      if (colQueues[c].length > 0) activeCols.push(c);
+    }
+    // Shuffle column order for random rain effect
+    for (var i = activeCols.length-1; i > 0; i--) {
+      var j = Math.floor(Math.random()*(i+1));
+      var t = activeCols[i]; activeCols[i]=activeCols[j]; activeCols[j]=t;
+    }
+
+    var colIdx = 0;          // next column to start dropping
+    var COLS_PER_FRAME = 4;  // activate this many new columns each frame
+    // track which columns have an in-flight brick right now
+    var colInFlight = new Array(COLS).fill(false);
+
+    function spawnNextForCol(c) {
+      if (colQueues[c].length === 0) return;
+      var tgt = colQueues[c].pop(); // bottom-most unfilled target in col
+      fallers.push({
+        col:       c,
+        y:         -1.0,              // start above canvas (row -1)
+        targetRow: tgt.row,
+        solid:     tgt.solid,
+        speed:     0.4 + Math.random() * 0.3  // rows per frame
+      });
+      colInFlight[c] = true;
     }
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      // background
       ctx.fillStyle = '#111110';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // subtle grid
-      ctx.strokeStyle = 'rgba(255,255,255,0.022)';
+      // grid lines
+      ctx.strokeStyle = 'rgba(255,255,255,0.018)';
       ctx.lineWidth = 0.5;
       for (var c = 0; c <= COLS; c++) {
-        ctx.beginPath(); ctx.moveTo(c * CELL, 0); ctx.lineTo(c * CELL, canvas.height); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(c*CELL,0); ctx.lineTo(c*CELL,canvas.height); ctx.stroke();
       }
       for (var r = 0; r <= ROWS; r++) {
-        ctx.beginPath(); ctx.moveTo(0, r * CELL); ctx.lineTo(canvas.width, r * CELL); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0,r*CELL); ctx.lineTo(canvas.width,r*CELL); ctx.stroke();
       }
 
-      // dim ghost of target
-      for (var r2 = 0; r2 < TROWS; r2++) {
-        for (var c2 = 0; c2 < COLS; c2++) {
-          var t = textRows[r2][c2];
-          if (!t) continue;
-          ctx.fillStyle = t.dim;
-          ctx.fillRect(c2 * CELL + 1, (PAD_TOP + r2) * CELL + 1, BK, BK);
+      // ghost target outlines
+      for (var r = 0; r < totalTextRows; r++) {
+        for (var c = 0; c < COLS; c++) {
+          var p = pixelGrid[r][c];
+          if (!p) continue;
+          ctx.fillStyle = p.dim;
+          ctx.fillRect(c*CELL+1, (PAD_TOP+r)*CELL+1, BK, BK);
         }
       }
 
-      // placed bricks on board
-      for (var r3 = 0; r3 < ROWS; r3++) {
-        for (var c3 = 0; c3 < COLS; c3++) {
-          var cell = board[r3][c3];
-          if (!cell) continue;
-          ctx.fillStyle = cell.solid;
-          ctx.fillRect(c3 * CELL + 1, r3 * CELL + 1, BK, BK);
-          // top-edge highlight
-          ctx.fillStyle = 'rgba(255,255,255,0.30)';
-          ctx.fillRect(c3 * CELL + 1, r3 * CELL + 1, BK, 2);
-          // subtle bottom shadow
-          ctx.fillStyle = 'rgba(0,0,0,0.25)';
-          ctx.fillRect(c3 * CELL + 1, r3 * CELL + BK - 1, BK, 2);
+      // placed board bricks
+      for (var r = 0; r < ROWS; r++) {
+        for (var c = 0; c < COLS; c++) {
+          if (!board[r][c]) continue;
+          ctx.fillStyle = board[r][c];
+          ctx.fillRect(c*CELL+1, r*CELL+1, BK, BK);
+          ctx.fillStyle = 'rgba(255,255,255,0.28)';
+          ctx.fillRect(c*CELL+1, r*CELL+1, BK, 2);
+          ctx.fillStyle = 'rgba(0,0,0,0.22)';
+          ctx.fillRect(c*CELL+1, r*CELL+BK-1, BK, 2);
         }
       }
 
       // falling bricks
       for (var f = 0; f < fallers.length; f++) {
         var fb = fallers[f];
-        var px = fb.col * CELL + 1;
-        var py = Math.floor(fb.y) * CELL + 1;
-        if (py + CELL < 0) continue;
+        var py = Math.floor(fb.y) * CELL;
+        if (py + CELL <= 0) continue;
         ctx.fillStyle = fb.solid;
-        ctx.fillRect(px, py, BK, BK);
-        ctx.fillStyle = 'rgba(255,255,255,0.30)';
-        ctx.fillRect(px, py, BK, 2);
+        ctx.fillRect(fb.col*CELL+1, py+1, BK, BK);
+        ctx.fillStyle = 'rgba(255,255,255,0.28)';
+        ctx.fillRect(fb.col*CELL+1, py+1, BK, 2);
       }
-    }
-
-    function isAllDone() {
-      if (qIdx < queue.length) return false;
-      if (fallers.length > 0) return false;
-      return true;
     }
 
     function step() {
-      // spawn new bricks from queue
-      for (var s = 0; s < SPAWN_RATE && qIdx < queue.length; s++) {
-        var q = queue[qIdx++];
-        // only spawn if target cell isn't already filled (de-dup)
-        if (!board[q.targetRow][q.col]) {
-          fallers.push({
-            col: q.col,
-            y: -1,                        // start just above canvas
-            targetRow: q.targetRow,
-            solid: q.solid,
-            li: q.li,
-            speed: 0.55 + Math.random() * 0.45  // cells per frame
-          });
-        }
+      // Activate new columns each frame
+      for (var s = 0; s < COLS_PER_FRAME && colIdx < activeCols.length; s++, colIdx++) {
+        spawnNextForCol(activeCols[colIdx]);
       }
 
-      // update fallers
-      var survivors = [];
+      // Update fallers
+      var next = [];
       for (var f = 0; f < fallers.length; f++) {
         var fb = fallers[f];
-        var floor = getFloorForCol(fb.col, fb.targetRow);
-        // target row is the desired final resting place, but brick can only
-        // land on top of what's already there — use min
-        var landRow = floor;
         fb.y += fb.speed;
-        if (Math.floor(fb.y) >= landRow) {
-          fb.y = landRow;
-          // lock to board
-          board[landRow][fb.col] = { solid: fb.solid, li: fb.li };
-          // don't keep it in fallers
+        if (fb.y >= fb.targetRow) {
+          // landed — place on board
+          fb.y = fb.targetRow;
+          board[fb.targetRow][fb.col] = fb.solid;
+          colInFlight[fb.col] = false;
+          // If this column has more targets, spawn the next one immediately
+          if (colQueues[fb.col].length > 0) {
+            spawnNextForCol(fb.col);
+          }
         } else {
-          survivors.push(fb);
+          next.push(fb);
         }
       }
-      fallers = survivors;
+      fallers = next;
 
       draw();
 
-      if (isAllDone()) {
-        // final draw with glowing effect on completed text
-        draw();
-        // gentle glow pulse — just let canvas sit
-        return;
+      // Done when no fallers and no pending queue items in any col
+      var pending = false;
+      for (var c = 0; c < COLS; c++) {
+        if (colQueues[c].length > 0 || colInFlight[c]) { pending = true; break; }
       }
+      if (fallers.length > 0) pending = true;
+      if (colIdx < activeCols.length) pending = true;
 
-      animId = requestAnimationFrame(step);
+      if (pending) animId = requestAnimationFrame(step);
     }
 
-    // kick off
     animId = requestAnimationFrame(step);
   }
 
-  // Re-init on resize
-  var resizeTimer;
-  window.addEventListener('resize', function () {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(init, 150);
+  var rztimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(rztimer);
+    rztimer = setTimeout(init, 150);
   });
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+
 })();
+
 
 // ── LOTTIE ──
 
