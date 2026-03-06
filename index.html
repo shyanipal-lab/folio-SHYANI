@@ -968,6 +968,15 @@ footer {
 /* ─────────────────────────────────────────
    RESPONSIVE
 ───────────────────────────────────────── */
+   .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 5vw, 4rem);
+}
+section {
+  padding: 5rem 0;
+}
+
 @media (max-width: 960px) {
   .work-card.span-7,.work-card.span-5,.work-card.span-6,.work-card.span-4,.work-card.span-8 { grid-column:span 12; }
   .about-grid { grid-template-columns:1fr; }
