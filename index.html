@@ -32,7 +32,6 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 section { padding: 5rem 0; }
-
 html { scroll-behavior: smooth; font-size: 16px; }
 
 body {
@@ -937,32 +936,33 @@ footer {
 }
 .reveal.in { opacity: 1; transform: none; }
 
+
 /* ─────────────────────────────────────────
    HERO
 ───────────────────────────────────────── */
-.hero { min-height:100svh; display:flex; flex-direction:column; justify-content:center; padding:6rem 0 3rem; }
-.hero-inner { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; width:100%; }
-.hero-left { display:flex; flex-direction:column; gap:1.5rem; }
-.hero-right { position:relative; display:flex; align-items:flex-start; justify-content:center; }
-.hero-eyebrow { font-size:0.8rem; color:var(--ink-2); line-height:1.5; max-width:42ch; }
-.hero-headline { font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(2.2rem,4.5vw,3.6rem); line-height:1.08; letter-spacing:-0.03em; color:var(--ink); }
-.hero-headline em { font-style:italic; font-family:'Libre Baskerville',serif; font-weight:400; color:var(--accent); }
-.hero-body { font-size:0.95rem; color:var(--ink-2); line-height:1.7; max-width:44ch; }
-.hero-social { display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; }
-.social-pill { display:inline-flex; align-items:center; justify-content:center; background:none; border:none; padding:0; text-decoration:none; transition:transform 0.2s, opacity 0.2s; }
-.social-pill:hover { transform:translateY(-3px); opacity:0.75; }
-.lottie-pill { padding:0; }
-.lottie-icon { width:44px; height:44px; flex-shrink:0; pointer-events:none; display:block; }
-.hero-cta { display:flex; gap:0.75rem; flex-wrap:wrap; align-items:center; margin-top:0.25rem; }
-.btn-primary { display:inline-flex; align-items:center; gap:0.5rem; padding:0.7rem 1.5rem; background:var(--ink); color:var(--bg); border:none; border-radius:100px; font-family:'Syne',sans-serif; font-size:0.85rem; font-weight:700; text-decoration:none; cursor:pointer; transition:background 0.2s,transform 0.18s; }
-.btn-primary:hover { background:var(--accent); transform:translateY(-2px); }
-.btn-ghost { display:inline-flex; align-items:center; gap:0.5rem; padding:0.7rem 1.5rem; background:transparent; color:var(--ink); border:1.5px solid var(--line-strong); border-radius:100px; font-family:'Syne',sans-serif; font-size:0.85rem; font-weight:600; text-decoration:none; cursor:pointer; transition:border-color 0.2s,color 0.2s,transform 0.18s; }
-.btn-ghost:hover { border-color:var(--ink); transform:translateY(-2px); }
+.hero { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: 6rem 0 3rem; }
+.hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+.hero-left { display: flex; flex-direction: column; gap: 1.5rem; }
+.hero-right { position: relative; display: flex; align-items: flex-start; justify-content: center; }
+.hero-eyebrow { font-size: 0.8rem; color: var(--ink-2); line-height: 1.5; max-width: 42ch; }
+.hero-headline { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2.2rem, 4.5vw, 3.6rem); line-height: 1.08; letter-spacing: -0.03em; color: var(--ink); }
+.hero-headline em { font-style: italic; font-family: 'Libre Baskerville', serif; font-weight: 400; color: var(--accent); }
+.hero-body { font-size: 0.95rem; color: var(--ink-2); line-height: 1.7; max-width: 44ch; }
+.hero-social { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+.social-pill { display: inline-flex; align-items: center; justify-content: center; background: none; border: none; padding: 0; text-decoration: none; transition: transform 0.2s, opacity 0.2s; }
+.social-pill:hover { transform: translateY(-3px); opacity: 0.75; }
+.lottie-pill { padding: 0; }
+.lottie-icon { width: 44px; height: 44px; flex-shrink: 0; pointer-events: none; display: block; }
+.hero-cta { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+.btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.75rem; background: var(--ink); color: var(--bg); border: none; border-radius: 100px; font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; text-decoration: none; cursor: pointer; transition: background 0.2s, transform 0.18s; }
+.btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+.btn-ghost { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.75rem; background: transparent; color: var(--ink); border: 1.5px solid var(--line-strong); border-radius: 100px; font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 600; text-decoration: none; cursor: pointer; transition: border-color 0.2s, color 0.2s, transform 0.18s; }
+.btn-ghost:hover { border-color: var(--ink); transform: translateY(-2px); }
 /* ─────────────────────────────────────────
    RESPONSIVE
 ───────────────────────────────────────── */
 @media (max-width: 960px) {
-  .hero-inner { grid-template-columns: 1fr; padding-top: 2rem; }
+  .hero-inner { grid-template-columns: 1fr; }
   .hero-right { order: -1; max-width: 480px; margin: 0 auto; width: 100%; }
   .hero-illustration { aspect-ratio: 4/3; }
   .hero-body { max-width: 100%; }
@@ -984,17 +984,15 @@ footer {
   section { padding: 4rem 0; }
   .sec-header { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
 }
-
 @media (max-width: 600px) {
-  .nav-pill-list { gap: 6px; padding: 0.3rem 0.4rem; }
+  .nav-pill-list { gap: 5px; padding: 0.3rem 0.4rem; }
   .nav-pill { width: 32px; height: 32px; }
   .nav-pill:hover { width: 108px; }
   .nav-pill-fun:hover { width: 122px; }
   .nav-pill-icon { font-size: 0.82rem; }
   .nav-pill-title { font-size: 0.6rem; }
   section { padding: 3rem 0; }
-  .container { padding: 0 1.1rem; }
-  .work-card.span-12 { grid-column: span 12; }
+  .container { padding: 0 1rem; }
   .process-grid { grid-template-columns: 1fr; }
   .process-step { border-right: none; }
   .skills-row { grid-template-columns: 1fr; }
@@ -1004,10 +1002,12 @@ footer {
   .cta-wrap { padding: 2.5rem 1.25rem; }
   .cta-actions { flex-direction: column; align-items: center; }
   .hero-social { gap: 0.4rem; }
-  .lottie-icon { width: 38px; height: 38px; }
-  .dvo-r1 { font-size: clamp(2.6rem, 13vw, 4.5rem) !important; }
-  .dvo-vibe { font-size: clamp(1.9rem, 10vw, 3.5rem) !important; }
-  footer { padding: 1.5rem 1.25rem; }
+  .lottie-icon { width: 36px; height: 36px; }
+  .sec-header { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .dvo-r1 { font-size: clamp(2.5rem, 13vw, 4.5rem) !important; }
+  .dvo-vibe { font-size: clamp(1.8rem, 10vw, 3.5rem) !important; }
+  footer { padding: 1.5rem 1rem; }
+  .hero { padding: 5rem 0 2rem; }
 }
 
 /* Hoshaksham wide card */
@@ -1051,7 +1051,8 @@ footer {
 <!-- ──────────────────────────────────────
      HERO
 ────────────────────────────────────── -->
-<div id="hero" class="hero">
+<section id="hero" class="hero">
+  <div class="container">
   <div class="hero-inner">
 
     <!-- Left -->
@@ -1097,8 +1098,8 @@ footer {
         <canvas id="physicsCanvas" class="physics-canvas"></canvas>
       </div>
     </div>
-
   </div><!-- /hero-inner -->
+  </div><!-- /container -->
 </section><!-- /hero -->
 
 <!-- ── CLIENTS MARQUEE ── -->
