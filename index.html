@@ -274,6 +274,13 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
   .cta-actions .btn-primary,.cta-actions .btn-ghost { justify-content:center; }
   footer { padding:1.5rem 1.25rem; }
 }
+
+/* ── PHONE MOCKUP (hoshaksham card) ── */
+.phone-mockup { width:160px;aspect-ratio:9/19;background:var(--ink);border-radius:22px;border:4px solid #333;overflow:hidden;position:relative;box-shadow:0 20px 40px rgba(0,0,0,0.28);transition:transform .3s; }
+.phone-mockup:hover { transform:rotate(-2deg) scale(1.04); }
+.phone-notch { position:absolute;top:0;left:50%;transform:translateX(-50%);width:40px;height:6px;background:#111;border-radius:0 0 6px 6px; }
+.phone-screen { width:100%;height:100%;background:#1a1a1a;display:flex;flex-direction:column;padding:1rem .75rem;gap:.5rem; }
+
 </style>
 </head>
 <body>
@@ -810,12 +817,13 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
     var SPAWN_RATE  = 3;    // new bricks per frame
     var done = false;
 
-    function getFloorForCol(col) {
-      // floor = topmost occupied cell in this col (minus 1), or ROWS-1
+    function getFloorForCol(col, targetRow) {
+      // Find the topmost occupied cell in this col above targetRow
       for (var r3 = 0; r3 < ROWS; r3++) {
         if (board[r3][col]) return r3 - 1;
       }
-      return ROWS - 1;
+      // Nothing placed yet — land exactly at targetRow
+      return targetRow;
     }
 
     function draw() {
@@ -900,10 +908,10 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
       var survivors = [];
       for (var f = 0; f < fallers.length; f++) {
         var fb = fallers[f];
-        var floor = getFloorForCol(fb.col);
+        var floor = getFloorForCol(fb.col, fb.targetRow);
         // target row is the desired final resting place, but brick can only
         // land on top of what's already there — use min
-        var landRow = Math.min(fb.targetRow, floor);
+        var landRow = floor;
         fb.y += fb.speed;
         if (Math.floor(fb.y) >= landRow) {
           fb.y = landRow;
