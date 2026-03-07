@@ -668,10 +668,9 @@ footer {
       </div>
     </div>
     <div class="cs-hero-img reveal" style="transition-delay:.2s">
-      <div class="cs-hero-img-inner">
-        <span>↑ Add your hero image here</span>
-        <span style="font-size:0.6rem; opacity:0.5">(framerusercontent.com/images/1DBFcF5UBL8XBWRhgW5B1dmr8.png)</span>
-      </div>
+      <video autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block;">
+        <source src="Add_bulk_mileage_com.mp4" type="video/mp4">
+      </video>
     </div>
   </div>
 </div>
@@ -993,13 +992,13 @@ footer {
   <span class="footer-name">Shyani Pal</span>
   <span>© 2025 · Product Designer</span>
   <div class="footer-links">
-    <a href="mailto:shyanipal06@gmail.com">Email</a>
+    <a href="/cdn-cgi/l/email-protection#76051e0f17181f06171a464036111b171f1a5815191b">Email</a>
     <a href="#">LinkedIn</a>
     <a href="index.html">Home</a>
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
 let mx = 0, my = 0, rx = 0, ry = 0;
@@ -1016,7 +1015,7 @@ animateRing();
 
 const reveals = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  entries.forEach(e => { if (e.isIntersecting)   { e.target.classList.add('in'); io.unobserve(e.target); } });
 }, { threshold: 0.06 });
 reveals.forEach(el => io.observe(el));
 </script>
