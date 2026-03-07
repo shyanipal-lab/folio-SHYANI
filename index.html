@@ -64,21 +64,27 @@ nav { position:fixed;top:1.25rem;left:50%;transform:translateX(-50%);z-index:500
 .easter-egg-toast.show { transform:translateX(-50%) translateY(0);opacity:1; }
 
 /* ── HERO ─────────────────────────────────────────────────────────────────── */
-.hero { display:flex;flex-direction:column;min-height:100svh;padding-top:4.5rem; }
+.hero { display:flex;flex-direction:column;background:var(--bg); }
 
-/* Brick zone: full-bleed dark canvas, rounded bottom edge */
-.hero-brick-zone { width:100%;background:#111110;border-radius:0 0 var(--r-xl) var(--r-xl);overflow:hidden;flex-shrink:0; }
-#brickCanvas { display:block;width:100%;image-rendering:pixelated; }
+/* Canvas fills full viewport — no padding, no radius */
+.hero-brick-zone { width:100%;height:100svh;flex-shrink:0;overflow:hidden;background:#111110; }
+#brickCanvas { display:block;width:100%;height:100%;image-rendering:pixelated; }
 
-/* Content below animation */
-.hero-bottom { padding:3rem 0 4.5rem;display:flex;flex-direction:column;gap:1.4rem; }
+/* Text block — sits BELOW the canvas, normal flow */
+.hero-bottom {
+  display:flex;flex-direction:column;gap:1.4rem;
+  padding:3rem 0 4.5rem;
+}
 .hero-eyebrow { font-size:.8rem;color:var(--ink-3);line-height:1.6;max-width:58ch; }
 .hero-eyebrow strong { color:var(--ink-2);font-weight:500; }
 .hero-headline { font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(2.5rem,4.5vw,3.9rem);line-height:1.06;letter-spacing:-.035em;color:var(--ink); }
 .hero-headline em { font-style:italic;font-family:'Libre Baskerville',serif;font-weight:400;color:var(--accent); }
 .hero-body { font-size:1.025rem;color:var(--ink-2);line-height:1.8;max-width:54ch; }
-.hero-body p+p { margin-top:.65rem; }
-.hero-social { display:flex;align-items:center;gap:.2rem;padding-top:.15rem; }
+.hero-body p+p { margin-top:.5rem; }
+.hero-social { display:flex;align-items:center;gap:.2rem; }
+/* terminal cursor blink on eyebrow */
+.hero-eyebrow::after { content:'_';animation:blink .9s step-end infinite;color:rgba(107,140,255,0.7);font-weight:700; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 .social-pill { display:inline-flex;align-items:center;justify-content:center;background:none;border:none;padding:0;text-decoration:none;transition:transform .2s,opacity .2s; }
 .social-pill:hover { transform:translateY(-3px);opacity:.72; }
 .lottie-icon { width:132px;height:132px;flex-shrink:0;pointer-events:none;display:block; }
@@ -275,9 +281,9 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
   .nav-pill-fun:hover { width:134px; }
   .nav-pill-icon { font-size:.88rem; }
   .nav-pill-title { font-size:.65rem; }
-  .hero { padding-top:4rem; }
+  /* hero is full-viewport on mobile too, no padding-top */
   .hero-bottom { padding:2.25rem 0 3.5rem;gap:1.1rem; }
-  .hero-brick-zone { border-radius:0 0 var(--r-lg) var(--r-lg); }
+  /* hero is full viewport on mobile too */
   .lottie-icon { width:114px;height:114px; }
   .work-grid { gap:1rem; }
   .card-body { padding:1.25rem 1.25rem 1.5rem; }
@@ -328,17 +334,17 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
 ────────────────────────────────────── -->
 <section id="hero" class="hero">
 
-  <!-- ── BRICK ANIMATION ZONE — full width ── -->
+  <!-- ── BRICK ANIMATION — full viewport canvas ── -->
   <div class="hero-brick-zone">
     <canvas id="brickCanvas"></canvas>
   </div>
 
-  <!-- ── HERO CONTENT BELOW BRICKS ── -->
+  <!-- ── HERO CONTENT — below canvas ── -->
   <div class="container">
     <div class="hero-bottom reveal">
 
       <div class="hero-name-block">
-        <p class="hero-eyebrow">Shyani is building <strong>Connectivity @ Mercedes Benz</strong> — yes, the car company. No, she can't get you a discount.</p>
+        <p class="hero-eyebrow">Building <strong>Connectivity @ Mercedes-Benz</strong> — yes, the car company.</p>
       </div>
 
       <h1 class="hero-headline reveal" style="transition-delay:.08s">
@@ -348,8 +354,8 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
       </h1>
 
       <div class="hero-body reveal" style="transition-delay:.14s">
-        <p>Blending UX strategy, strong craft, and business impact — currently designing in-car and connected experiences at Mercedes-Benz R&D. Occasionally I also make toast, but that's a different kind of UX.</p>
-        <p style="margin-top:.75rem; font-size:.88rem; color: var(--ink-3);">500+ support tickets fixed. Zero cars crashed. <span class="wiggle" style="display:inline-block; cursor:default">🏎️</span></p>
+        <p>UX strategy + strong craft — designing in-car and connected experiences at Mercedes-Benz R&D.</p>
+        <p style="margin-top:.5rem; font-size:.88rem; color: var(--ink-3);">500+ tickets fixed. Zero cars crashed. <span class="wiggle" style="display:inline-block; cursor:default">🏎️</span></p>
       </div>
 
       <div class="hero-social">
@@ -392,7 +398,7 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
     <div class="sec-header reveal">
       <div>
         <div class="sec-label">Selected Work</div>
-        <h2 class="sec-title">Case studies &amp; projects</h2>
+        <h2 class="sec-title">Selected work</h2>
       </div>
       <a href="#" class="sec-link" data-tooltip="Yes, there's more. I'm prolific like that.">All work</a>
     </div>
@@ -403,8 +409,8 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
         <div class="card-body">
           <div class="card-tags"><span class="ctag">Fintech</span><span class="ctag">Expense Management</span><span class="ctag accent">Case Study</span></div>
           <div class="card-title">Fyle — Bulk Mileage Expense Report</div>
-          <div class="card-desc">500+ users were furiously filing mileage expenses by hand. Some were reportedly using Excel. Nobody was okay. I fixed it in 6 weeks — research, ideation, prototyping, shipped.</div>
-          <div class="card-footer"><div class="card-metric" style="color:#6ee7a8">500+ complaint tickets resolved in one month.</div><a href="fyle-case-study.html" class="card-cta">Read case study</a></div>
+          <div class="card-desc">500+ users filing mileage expenses by hand. Fixed in 6 weeks — research to shipped.</div>
+          <div class="card-footer"><div class="card-metric" style="color:#6ee7a8">500+ tickets resolved.</div><a href="fyle-case-study.html" class="card-cta">Read case study</a></div>
         </div>
       </div>
       <div class="work-card span-5 coming-soon reveal" style="transition-delay:.06s; position:relative;">
@@ -412,8 +418,8 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
         <div class="card-body">
           <div class="card-tags"><span class="ctag">Mobility</span><span class="ctag">Connected Car</span><span class="ctag blue">Enterprise</span></div>
           <div class="card-title">Connectivity @ Mercedes-Benz R&amp;D</div>
-          <div class="card-desc">Designing in-car and connected experiences for millions of vehicles. It's a lot of pressure. The cars are also very fast.</div>
-          <div class="card-footer"><div class="card-metric">Shipped in production vehicles globally.</div><a href="#" class="card-cta">View project</a></div>
+          <div class="card-desc">In-car and connected experiences for millions of vehicles.</div>
+          <div class="card-footer"><div class="card-metric">In production. Globally.</div><a href="#" class="card-cta">View project</a></div>
         </div>
       </div>
       <div class="work-card span-12 reveal" style="transition-delay:.04s">
@@ -421,7 +427,7 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
           <div class="hoshaksham-left">
             <div class="card-tags" style="margin-bottom:.85rem"><span class="ctag">0 → 1</span><span class="ctag">SaaS</span><span class="ctag">Mobile App</span><span class="ctag accent">Flutter</span><span class="ctag blue">Case Study</span></div>
             <div class="card-title" style="font-size:clamp(1.3rem,2.5vw,1.8rem);margin-bottom:.6rem">Hoshaksham — From one yoga teacher to a live product</div>
-            <div class="card-desc" style="max-width:52ch">One user interview with Priya — a yoga teacher drowning in payment spreadsheets — became a full subscription management SaaS. Figma to Flutter. Zero spreadsheets required. MVP shipped in 8 weeks.</div>
+            <div class="card-desc" style="max-width:52ch">One user interview → full subscription management SaaS. Figma to Flutter. Shipped in 8 weeks.</div>
             <div style="display:flex;gap:2rem;flex-wrap:wrap;margin-top:1.25rem">
               <div><div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent);line-height:1">8wk</div><div style="font-size:0.72rem;color:var(--ink-2);margin-top:.2rem">interview to shipped alpha</div></div>
               <div><div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent);line-height:1">1</div><div style="font-size:0.72rem;color:var(--ink-2);margin-top:.2rem">user interview</div></div>
@@ -468,32 +474,32 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
     <div class="sec-header reveal">
       <div>
         <div class="sec-label">How I work</div>
-        <h2 class="sec-title">Process, not magic.<br><span style="font-size:0.6em; font-weight:400; color:var(--ink-3)">(Although sometimes it feels like magic. I take full credit.)</span></h2>
+        <h2 class="sec-title">Process, not magic.</h2>
       </div>
     </div>
     <div class="process-grid reveal">
       <div class="process-step">
         <div class="proc-num">01</div>
         <div class="proc-title">Understand the problem</div>
-        <div class="proc-desc">I start by talking to users and stakeholders — not just to gather data, but because listening first is how you avoid designing solutions to the wrong problem. (Hard lesson. Learned it the fun way.)</div>
+        <div class="proc-desc">Talking to users and stakeholders first — because listening is how you avoid solving the wrong problem.</div>
       </div>
       <div class="process-step">
         <div class="proc-num">02</div>
         <div class="proc-title">Frame with clarity</div>
-        <div class="proc-desc">A well-framed problem is half the solution. I write clear problem statements, define success metrics, and align the team before any pixels move. Yes, before.</div>
+        <div class="proc-desc">Clear problem statement, defined success metrics, team aligned — before any pixels move.</div>
       </div>
       <div class="process-step">
         <div class="proc-num">03</div>
         <div class="proc-title">Explore with intent</div>
-        <div class="proc-desc">I explore multiple directions with lo-fi flows, test assumptions early, and cut ruthlessly based on evidence — not aesthetics, opinion, or whoever spoke last in the standup.</div>
+        <div class="proc-desc">Multiple lo-fi directions, early assumption testing, cuts based on evidence — not opinions.</div>
       </div>
       <div class="process-step">
         <div class="proc-num">04</div>
         <div class="proc-title">Ship &amp; learn</div>
-        <div class="proc-desc">I treat the first release as a hypothesis. I track metrics, synthesise feedback, and push for the next iteration. Design doesn't stop at handoff — unlike my attention span during all-hands meetings.</div>
+        <div class="proc-desc">First release = hypothesis. Track, synthesise, iterate. Design doesn't stop at handoff.</div>
       </div>
     </div>
-    <p class="process-footnote reveal">* No designers were harmed in the making of these processes. Several sticky notes were.</p>
+    <p class="process-footnote reveal">* No designers harmed. Several sticky notes: gone.</p>
   </div>
 </section>
 
@@ -524,17 +530,17 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
         
         <!-- Fun facts strip — click to cycle -->
         <div class="fun-fact-strip" id="funFactStrip" data-tooltip="Click for another fun fact">
-          🎲 <strong>Fun fact:</strong> <span id="funFactText">Shyani has shipped products used by more people than have read this sentence.</span>
+          🎲 <strong>Fun fact:</strong> <span id="funFactText">Ships products people actually use.</span>
         </div>
       </div>
 
       <!-- Content -->
       <div class="about-content reveal" style="transition-delay:.1s">
-        <h2 class="about-headline">I help teams make better decisions through design.<span>(I also have opinions about font sizes. Everyone knows.)</span></h2>
+        <h2 class="about-headline">I help teams make better decisions through design.</h2>
         <div class="about-body">
-          <p>I'm Shyani — a product designer with <strong>4+ years</strong> of experience across enterprise mobility, fintech, and consumer apps. I'm currently designing in-car and connected experiences at <strong>Mercedes-Benz R&D</strong> in Bengaluru, where my commute and my job description are ironically disconnected.</p>
-          <p>My approach is <strong>commercially aware</strong> and pragmatic. I work closely with PMs and engineers, push back when needed, and ship work I'm proud of. I'm not precious about ideas — I care about outcomes. (My stakeholders appreciate this. Mostly.)</p>
-          <p>I'm actively exploring <strong>Senior Product Designer</strong> roles at ambitious startups and scale-ups across the UK — whether in London, hybrid, or fully remote. If you're building something meaningful and occasionally chaotic, we'll get along.</p>
+          <p>Product designer, <strong>4+ years</strong> across mobility, fintech, and consumer apps. Currently at <strong>Mercedes-Benz R&D</strong>, Bengaluru.</p>
+          <p><strong>Commercially aware</strong> and pragmatic. Close to PMs and engineers, push back when needed, care about outcomes over ideas.</p>
+          <p>Actively exploring <strong>Senior Product Designer</strong> roles at UK startups and scale-ups — London, hybrid, or remote.</p>
         </div>
         <div class="skills-row">
           <div class="skill-box" data-tooltip="The whole thing. Start to finish.">
@@ -558,16 +564,16 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
         <!-- Made with block -->
         <div class="tools-block">
           <div class="tools-title">Made with</div>
-          <div class="tools-subtitle">...and a dangerous amount of caffeine.</div>
+          <div class="tools-subtitle">...and caffeine.</div>
           <div class="tools-grid">
-            <div class="tool-item" data-tooltip="Where the magic happens. And the arguments about component naming.">
+            <div class="tool-item" data-tooltip="Where the magic happens.">
               <div class="tool-icon">🎨</div>
               <div class="tool-info">
                 <div class="tool-name">Figma</div>
                 <div class="tool-role">UI design & prototyping</div>
               </div>
             </div>
-            <div class="tool-item" data-tooltip="AI-assisted. Still smarter than the AI.">
+            <div class="tool-item" data-tooltip="AI-assisted.">
               <div class="tool-icon">💜</div>
               <div class="tool-info">
                 <div class="tool-name">Lovable</div>
@@ -604,7 +610,7 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
     <div class="cta-wrap reveal">
       <div class="cta-label">Let's talk</div>
       <h2 class="cta-title">Building something<br>worth getting <em>right?</em></h2>
-      <p class="cta-body">I'm currently looking for Senior Product Designer roles at ambitious startups and scale-ups across the UK. If you're working on a meaningful problem (or a mildly chaotic one — I don't judge), let's talk.</p>
+      <p class="cta-body">Looking for Senior Product Designer roles at UK startups and scale-ups. Meaningful problems preferred.</p>
       <div class="cta-actions">
         <a href="/cdn-cgi/l/email-protection#493a2130282720392825797f092e24282025672a2624" class="btn-primary">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -614,7 +620,7 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
           View LinkedIn →
         </a>
       </div>
-      <p class="cta-small-print">Response time: usually within 24 hrs. Unless it's Monday morning, in which case: 26 hrs.</p>
+      <p class="cta-small-print">Usually replies within 24 hrs.</p>
     </div>
   </div>
 </section>
@@ -712,7 +718,7 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
     { text:'CODER',     solid:'#6b8cff', dim:'rgba(107,140,255,0.15)' }
   ];
 
-  var FROWS = 7, LGAP = 3, CGAP = 1, PAD_TOP = 3;
+  var FROWS = 7, LGAP = 3, CGAP = 1, PAD_TOP = 3; // will be recalced per init
   var animId;
 
   function init() {
@@ -760,7 +766,14 @@ footer { border-top:1px solid var(--line-strong);padding:1.75rem 2.5rem;display:
         }
     });
 
-    var ROWS = PAD_TOP + totalTextRows;
+    // Fill the full viewport height — canvas is full-screen
+    var vpH = canvas.parentElement.offsetHeight || window.innerHeight;
+    // Center the text block vertically in upper 55% of viewport
+    var vpRows = Math.ceil(vpH / CELL);
+    var textMid = Math.floor(vpRows * 0.38); // target center row ~38% down
+    var halfText = Math.floor(totalTextRows / 2);
+    PAD_TOP = Math.max(2, textMid - halfText);
+    var ROWS = Math.max(PAD_TOP + totalTextRows + 4, vpRows);
     canvas.width  = COLS * CELL;
     canvas.height = ROWS * CELL;
     var ctx = canvas.getContext('2d');
