@@ -159,6 +159,134 @@ nav {
   font-size: 0.88rem; font-weight: 700;
   color: var(--ink);
 }
+a.meta-pill-live {
+  text-decoration: none;
+  background: rgba(42,157,92,0.12);
+  border-color: rgba(42,157,92,0.35);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  position: relative;
+}
+a.meta-pill-live:hover {
+  background: rgba(42,157,92,0.22);
+  border-color: rgba(42,157,92,0.6);
+  transform: translateY(-2px);
+}
+a.meta-pill-live .meta-pill-value { color: var(--green); }
+.live-dot {
+  position: absolute; top: 10px; right: 12px;
+  width: 7px; height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.4); }
+}
+
+/* DEVELOPER COLLAB SECTION */
+.collab-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+@media(max-width:640px){ .collab-grid { grid-template-columns: 1fr; } }
+.collab-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+.collab-card-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.collab-card-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+.collab-card-desc {
+  font-size: 0.88rem;
+  color: var(--ink-2);
+  line-height: 1.65;
+}
+.token-flow {
+  margin-top: 2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+}
+.token-flow-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-3); margin-bottom: 1.5rem;
+}
+.token-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+.token-step {
+  display: flex; flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1; min-width: 110px;
+}
+.token-step-bubble {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  margin-bottom: 0.6rem;
+}
+.token-step-label {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700; font-size: 0.78rem;
+  color: var(--ink);
+}
+.token-step-sub {
+  font-size: 0.72rem;
+  color: var(--ink-3);
+  margin-top: 0.2rem;
+}
+.token-arrow {
+  font-size: 1.1rem;
+  color: var(--ink-3);
+  padding: 0 0.25rem;
+  flex-shrink: 0;
+  margin-bottom: 1.5rem;
+}
+@media(max-width:600px){
+  .token-steps { gap: 0.5rem; }
+  .token-arrow { transform: rotate(90deg); }
+}
+.collab-quote {
+  margin-top: 2rem;
+  border-left: 3px solid var(--purple);
+  padding-left: 1.5rem;
+}
+.collab-quote-text {
+  font-family: 'Libre Baskerville', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--ink);
+}
+.collab-quote-attr {
+  font-size: 0.78rem;
+  color: var(--ink-3);
+  margin-top: 0.5rem;
+  font-family: 'Syne', sans-serif;
+  letter-spacing: 0.04em;
+}
+
 .cs-hero-img {
   width: 100%;
   aspect-ratio: 16/7;
@@ -639,6 +767,11 @@ footer {
         <span class="meta-pill-label">Approach</span>
         <span class="meta-pill-value">UCD + Co-design</span>
       </div>
+      <a href="https://hosaksham.in/" target="_blank" rel="noopener" class="meta-pill meta-pill-live">
+        <span class="live-dot"></span>
+        <span class="meta-pill-label">Live Site</span>
+        <span class="meta-pill-value">hosaksham.in ↗</span>
+      </a>
     </div>
     <div class="cs-hero-img reveal" style="transition-delay:.2s">
       <div class="cs-hero-img-inner">
@@ -939,6 +1072,75 @@ footer {
   </div>
 </div>
 
+<!-- DEVELOPER COLLABORATION -->
+<div class="cs-section">
+  <div class="container">
+    <div class="section-label reveal">Developer Collaboration</div>
+    <h2 class="section-title reveal">How design became code — together</h2>
+    <div class="section-body reveal">
+      <p>Working with the developer wasn't a handoff — it was a conversation. We stayed in sync from early wireframes to the final Flutter build, using a shared design language to make sure nothing got lost in translation.</p>
+    </div>
+
+    <div class="collab-grid reveal">
+      <div class="collab-card">
+        <div class="collab-card-icon">🧩</div>
+        <div class="collab-card-title">Weekly design syncs</div>
+        <div class="collab-card-desc">We held regular check-ins where I walked the developer through new screens in Figma — explaining not just what things looked like, but why they were designed that way. This meant fewer back-and-forths and fewer surprises in code.</div>
+      </div>
+      <div class="collab-card">
+        <div class="collab-card-icon">📐</div>
+        <div class="collab-card-title">Annotated component specs</div>
+        <div class="collab-card-desc">Every component was documented with spacing, states, interaction notes, and edge cases. Rather than leaving the developer to guess, I provided enough context so they could make decisions independently when I wasn't available.</div>
+      </div>
+      <div class="collab-card">
+        <div class="collab-card-icon">🎨</div>
+        <div class="collab-card-title">Figma design system</div>
+        <div class="collab-card-desc">I built a full design system in Figma with colour, typography, spacing, and component tokens — structured so the developer could inspect any element and find the exact value they needed without digging.</div>
+      </div>
+      <div class="collab-card">
+        <div class="collab-card-icon">🔁</div>
+        <div class="collab-card-title">Feedback loops on implementation</div>
+        <div class="collab-card-desc">I reviewed Flutter builds as they came in, flagging visual drift early. Small inconsistencies in spacing or colour were caught and corrected before they compounded — keeping the shipped product close to the designed one.</div>
+      </div>
+    </div>
+
+    <!-- Token flow diagram -->
+    <div class="token-flow reveal">
+      <div class="token-flow-title">Design-to-Flutter token pipeline</div>
+      <div class="token-steps">
+        <div class="token-step">
+          <div class="token-step-bubble" style="background: rgba(124,77,219,0.15);">🎨</div>
+          <div class="token-step-label">Figma</div>
+          <div class="token-step-sub">Colour, type &amp; spacing defined as styles</div>
+        </div>
+        <div class="token-arrow">→</div>
+        <div class="token-step">
+          <div class="token-step-bubble" style="background: rgba(59,91,219,0.15);">🏷️</div>
+          <div class="token-step-label">Design Tokens</div>
+          <div class="token-step-sub">Named variables exported via Tokens Studio</div>
+        </div>
+        <div class="token-arrow">→</div>
+        <div class="token-step">
+          <div class="token-step-bubble" style="background: rgba(245,200,66,0.2);">📄</div>
+          <div class="token-step-label">JSON / Dart</div>
+          <div class="token-step-sub">Token values translated into Flutter theme constants</div>
+        </div>
+        <div class="token-arrow">→</div>
+        <div class="token-step">
+          <div class="token-step-bubble" style="background: rgba(42,157,92,0.15);">📱</div>
+          <div class="token-step-label">Flutter Build</div>
+          <div class="token-step-sub">ThemeData populated — one source of truth</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="collab-quote reveal">
+      <div class="collab-quote-text">"Using design tokens meant the developer never had to guess a hex code or spacing value. Everything was named, documented, and traceable back to a decision."</div>
+      <div class="collab-quote-attr">— Shyani, on why tokens changed the handoff entirely</div>
+    </div>
+  </div>
+</div>
+
 <!-- LEARNINGS -->
 <div class="cs-section">
   <div class="container">
@@ -992,13 +1194,13 @@ footer {
   <span class="footer-name">Shyani Pal</span>
   <span>© 2025 · Product Designer</span>
   <div class="footer-links">
-    <a href="mailto:shyanipal06@gmail.com">Email</a>
+    <a href="/cdn-cgi/l/email-protection#97e4ffeef6f9fee7f6fba7a1d7f0faf6fefbb9f4f8fa">Email</a>
     <a href="#">LinkedIn</a>
     <a href="index.html">Home</a>
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
 let mx = 0, my = 0, rx = 0, ry = 0;
