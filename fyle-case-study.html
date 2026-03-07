@@ -584,6 +584,31 @@ nav {
 .img-placeholder.tall { aspect-ratio: 16/9; }
 .img-placeholder.short { aspect-ratio: 21/7; }
 
+/* DECISION VISUALS */
+.decision-visual {
+  margin-top: 2.5rem;
+}
+.decision-visual-label {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.decision-visual-num {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1rem; font-style: italic;
+  color: var(--accent);
+  background: rgba(232,68,28,0.08);
+  border: 1px solid rgba(232,68,28,0.2);
+  border-radius: 100px;
+  padding: 0.2rem 0.75rem;
+  flex-shrink: 0;
+}
+.decision-visual-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.85rem; font-weight: 700;
+  color: var(--ink-2);
+  letter-spacing: 0.01em;
+}
+
 /* REVEAL */
 .reveal {
   opacity: 0;
@@ -887,9 +912,50 @@ footer {
         <div class="decision-desc">One action at the end covers all entries. No more submitting one by one. The success state confirms everything went through cleanly — no ambiguity, no second-guessing.</div>
       </div>
     </div>
-    <div class="img-placeholder tall reveal">
-      <span>↑ Add your final design screens here</span>
+    <!-- Decision 01 -->
+    <div class="decision-visual reveal">
+      <div class="decision-visual-label">
+        <span class="decision-visual-num">01</span>
+        <span class="decision-visual-title">Auto-filled date with amendment option</span>
+      </div>
+      <div class="img-placeholder tall">
+        <span>↑ Add your date auto-fill screen here</span>
+      </div>
     </div>
+
+    <!-- Decision 02 -->
+    <div class="decision-visual reveal">
+      <div class="decision-visual-label">
+        <span class="decision-visual-num">02</span>
+        <span class="decision-visual-title">Constant input fields</span>
+      </div>
+      <div class="img-placeholder tall">
+        <span>↑ Add your constant fields screen here</span>
+      </div>
+    </div>
+
+    <!-- Decision 03 -->
+    <div class="decision-visual reveal">
+      <div class="decision-visual-label">
+        <span class="decision-visual-num">03</span>
+        <span class="decision-visual-title">Table view over form stacking</span>
+      </div>
+      <div class="img-placeholder tall">
+        <span>↑ Add your table view screen here</span>
+      </div>
+    </div>
+
+    <!-- Decision 04 -->
+    <div class="decision-visual reveal">
+      <div class="decision-visual-label">
+        <span class="decision-visual-num">04</span>
+        <span class="decision-visual-title">Bulk save or report action</span>
+      </div>
+      <div class="img-placeholder tall">
+        <span>↑ Add your bulk save screen here</span>
+      </div>
+    </div>
+
   </div>
 </div>
 
