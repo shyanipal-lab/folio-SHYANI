@@ -53,3 +53,18 @@
   }
 
 }
+<!-- Photo -->
+<div class="about-photo-wrap reveal">
+  <div class="about-photo" style="background:var(--bg-card)">
+    
+    <img src="assets/me-pic.jpeg" alt="Shyani Pal">
+
+    <div class="about-photo-badge">
+      <div class="about-photo-badge-text">Currently at</div>
+      <div class="about-photo-badge-sub">
+        Mercedes-Benz R&amp;D · Bengaluru
+      </div>
+    </div>
+
+  </div>
+</div>
