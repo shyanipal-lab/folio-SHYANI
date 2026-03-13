@@ -1,10 +1,8 @@
-/* ── Hero Layout ── */
 .hero {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 80px;
-  gap: 40px; /* added: prevents content squishing together */
 }
 
 .hero-left {
@@ -13,37 +11,17 @@
 
 .hero-right {
   width: 40%;
-  display: flex;          /* added: centers image inside */
-  justify-content: center;
-  align-items: center;
 }
 
-/* ── Image styles ── */
 .hero-right img {
   width: 100%;
   max-width: 450px;
-  height: auto;           /* added: prevents squishing */
-  display: block;         /* added: removes inline gap below image */
-  border-radius: 20px;    /* optional: softens the photo edges */
-  object-fit: cover;      /* added: keeps face visible if container constrains */
-  object-position: center top; /* added: prioritises face over body */
-  animation: float 4s ease-in-out infinite;
 }
-
-/* ── Float animation ── */
-@keyframes float {
-  0%   { transform: translateY(0px); }
-  50%  { transform: translateY(-12px); }
-  100% { transform: translateY(0px); }
-}
-
-/* ── Responsive ── */
 @media (max-width: 768px) {
+
   .hero {
     flex-direction: column;
     text-align: center;
-    padding: 40px 24px;   /* reduced: 80px feels cramped on mobile */
-    gap: 30px;
   }
 
   .hero-left {
@@ -52,6 +30,26 @@
 
   .hero-right {
     width: 80%;
-    margin-top: 0;        /* removed: gap handles spacing now */
+    margin-top: 30px;
   }
+
+}
+.hero-right img {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+
 }
